@@ -16,6 +16,7 @@ const chatController = {
     let io = req.app.get('socketio');
 
     io.emit('public', { user, message });
+    res.redirect('javascript:history.back()')
   },
 };
 

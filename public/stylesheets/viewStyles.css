@@ -1329,6 +1329,7 @@ a:hover {
   grid-template-columns: 25px 350px 400px 600px 25px;
   height: 100vh;
   width: 100%;
+  border: 1px solid gray;
 }
 
 /* 中間欄位 */

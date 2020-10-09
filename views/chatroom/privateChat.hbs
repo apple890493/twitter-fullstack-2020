@@ -1,0 +1,91 @@
+<div class="private-container-chat">
+  {{> left-column}}
+  <div class="private-center-list">
+    <div class="private-center-title row mx-0 justify-content-between p-3 align-items-center">
+      <div class="online-list-title-text">訊息</div>
+      <i class="icon icon-message2" style="line-height: 16px;"></i>
+    </div>
+    <div class="online-list-body">
+      <div class="card private-tweets-content">
+
+        <div class="card-body private-msg-body" style="border:1px solid #e6ecf0;">
+          <div class="private-left-item">
+            <a href="/users/{{this.User.id}}">
+              <div class=""
+                style="width: 50px;height:50px;background:url({{this.User.avatar}})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
+              </div>
+            </a>
+          </div>
+          <div class="right-item">
+            <div class="title" style="justify-content: space-between;     margin-top: 3px;">
+              <span class="name">
+                <a href="/users/{{this.User.id}}/tweets">
+                  {{this.User.name}}asdas
+                  <span class="time">
+                    @{{this.User.account}}asdas
+                  </span>
+                </a>
+              </span>
+              <span class="time">
+                {{moment this.createdAt}}
+              </span>
+            </div>
+            <a href="/tweets/{{this.id}}" class="body">
+              {{subText this.description 100}}dweddd dweddd dweddddw edddd weddd dweddd dweddd dweddd dweddd
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="private-chat-room">
+    <div class="private-right-title row mx-0 py-1 pl-2 align-items-center">
+      <div class="online-list-title-text col-12 p-0" style="font-weight:bold;">{{user.name}}Apple</div>
+      <div class="private-text-gray">
+        @{{user.account}}Apple
+      </div>
+    </div>
+    <div class="private-right-body">
+
+  
+
+
+    </div>
+    <div class="private-right-footer">
+      <ul id="messages">
+
+      </ul>
+      <form id="chatroom" action="/public" method="POST" class="row mx-0" style="border: 1px solid #e6ecf0;">
+        <input id="m" autocomplete="off" name="message"
+          style="outline: none;border: none;background-color:#b5c7d6;border-radius:30px;width:92%;margin:10px;padding-left:5px;"
+          placeholder="輸入訊息...">
+        <button type="submit" class="fas fa-paper-plane btn btn-link px-0" style="color: #e0245e;"></button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+{{!-- <script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
+{{!-- <script src="../../public/javascripts/chat.js"></script> --}}
+
+<script src="/socket.io/socket.io.js"></script>
+{{!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> --}}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+  $(function () {
+    let socket = io();
+
+
+    // 接收到chat message這個event，就執行function的事
+    socket.on('public', (data) => {
+      let { user, message } = data;
+      let item = `${user}:${message}`
+      $('#messages').append($('<li>').text(item));
+    });
+  });
+
+
+</script>
