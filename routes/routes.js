@@ -155,5 +155,7 @@ router.delete(
 router.get('/api/users/:id', userController.getEditPage);
 router.post('/api/users/:id', userAuthenticated, userController.postEditPage);
 
-router.get('/chatroom', chatController.getChatRoom);
+router.get('/chatroom', userAuthenticated, chatController.getChatRoom);
+router.post('/public', userAuthenticated, chatController.postMessage);
+
 module.exports = router;
