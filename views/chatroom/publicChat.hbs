@@ -7,8 +7,8 @@
   </div>
   <div class="chat-room">
     <ul id="messages"></ul>
-    <form id="chatroom" action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+    <form id="chatroom" action="/public" method="POST">
+      <input id="m" autocomplete="off" name="msg" /><button type="submit">Send</button>
     </form>
   </div>
 </div>
@@ -21,21 +21,20 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
   $(function () {
-    var socket = io();
-    $('#chatroom').submit(function (e) {
-      e.preventDefault(); // prevents page reloading
-      socket.emit('chat message', $('#m').val());
-      $('#m').val('');
-      return false;
-    });
+    let socket = io();
 
     // 接收到chat message這個event，就執行function的事
-    socket.on('chat message', function (data) {
-      let { msg, userSelf } = data;
-      let item = `${userSelf.name}:${msg}`
+    socket.on('public', function (data) {
+      let { user, msg } = data;
+      let item = `${user}:${msg}`
       $('#messages').append($('<li>').text(item));
     });
   });
-
-
 </script>
+
+{{!-- $('#chatroom').submit(function (e) {
+          e.preventDefault(); // prevents page reloading
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        }); --}}

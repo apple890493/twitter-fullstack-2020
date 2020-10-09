@@ -66,29 +66,31 @@ const server = app.listen(port, () =>
 );
 
 const io = require('socket.io')(server);
+app.set('socketio', io);
+
 
 // 監聽connection這個event
-io.on('connection', (socket) => {
-  // 監聽chat message 這個event
-  socket.on('chat message', (msg) => {
-    //console.log('message: ' + msg);
-    io.emit('chat message', { msg, userSelf });
-  });
-  // console.log('a user connected');
-  // socket.on('disconnect', () => {
-  //   console.log('user disconnect.');
-  // });
-});
+// io.on('connection', (socket) => {
+//   // 監聽chat message 這個event
+//   socket.on('chat message', (msg) => {
+//     //console.log('message: ' + msg);
+//     io.emit('chat message', { msg, userSelf });
+//   });
+//   // console.log('a user connected');
+//   // socket.on('disconnect', () => {
+//   //   console.log('user disconnect.');
+//   // });
+// });
 
 // This will emit the event to all connected sockets
-io.emit('some event', {
-  someProperty: 'some value',
-  otherProperty: 'other value',
-});
+// io.emit('some event', {
+//   someProperty: 'some value',
+//   otherProperty: 'other value',
+// });
 
-io.on('connection', (socket) => {
-  socket.broadcast.emit('hi');
-});
+// io.on('connection', (socket) => {
+//   socket.broadcast.emit('hi');
+// });
 
 /*
 io.on('connection', (socket) => {
