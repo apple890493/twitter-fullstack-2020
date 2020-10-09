@@ -10,12 +10,13 @@ const chatController = {
     return res.render('chatroom/publicChat');
   },
   postMessage: (req, res) => {
-    // console.log('req@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', req)
-    let msg = req.body.msg
-    let user = helpers.getUser(req).name
-    let io = req.app.get('socketio')
-    io.emit('public', { user, msg })
-  }
+    let message = req.body.message;
+    let user = helpers.getUser(req).name;
+    //console.log(helpers.getUser(req).name);
+    let io = req.app.get('socketio');
+
+    io.emit('public', { user, message });
+  },
 };
 
 module.exports = chatController;

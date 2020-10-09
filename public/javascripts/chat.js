@@ -1,11 +1,16 @@
-let socket = io();
+document.addEventListener('DOMContentLoaded', () => {
+  var status = document.getElementById('status');
+  var online = document.getElementById('online');
 
-(function () {
-  var socket = io();
-  $('#chatroom').submit(function (e) {
-    e.preventDefault(); // prevents page reloading
-    socket.emit('chat message', $('#m').val());
-    $('#m').val('');
-    return false;
+  socket.on('connect', function () {
+    status.innerText = 'Connected.';
   });
-})();
+
+  socket.on('disconnect', function () {
+    status.innerText = 'Disconnected.';
+  });
+
+  socket.on('online', function (amount) {
+    online.innerText = amount;
+  });
+});

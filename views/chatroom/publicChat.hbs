@@ -8,7 +8,7 @@
   <div class="chat-room">
     <ul id="messages"></ul>
     <form id="chatroom" action="/public" method="POST">
-      <input id="m" autocomplete="off" name="msg" /><button type="submit">Send</button>
+      <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
     </form>
   </div>
 </div>
@@ -22,11 +22,10 @@
 <script>
   $(function () {
     let socket = io();
-
     // 接收到chat message這個event，就執行function的事
-    socket.on('public', function (data) {
-      let { user, msg } = data;
-      let item = `${user}:${msg}`
+    socket.on('public', (data) => {
+      let { user, message } = data;
+      let item = `${user}:${message}`
       $('#messages').append($('<li>').text(item));
     });
   });
