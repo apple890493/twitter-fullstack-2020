@@ -1,0 +1,41 @@
+<div class="container-chat">
+  {{> left-column}}
+  <div class="online-list">
+    <div class="online-list-title">
+      <div class="online-list-title-text">上線使用者(5)</div>
+    </div>
+  </div>
+  <div class="chat-room">
+    <ul id="messages"></ul>
+    <form id="chatroom" action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+  </div>
+</div>
+
+{{!-- <script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
+{{!-- <script src="../../public/javascripts/chat.js"></script> --}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+  $(function () {
+    var socket = io();
+    $('#chatroom').submit(function (e) {
+      e.preventDefault(); // prevents page reloading
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+
+    // 接收到chat message這個event，就執行function的事
+    socket.on('chat message', function (data) {
+      let { msg, userSelf } = data;
+      let item = `${userSelf.name}:${msg}`
+      $('#messages').append($('<li>').text(item));
+    });
+  });
+
+
+</script>

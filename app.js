@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
 const middleware = require('./config/middleware');
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -51,9 +52,50 @@ app.use((req, res, next) => {
 
   next();
 });
+let userSelf;
 
+app.use((req, res, next) => {
+  if (helpers.getUser(req)) {
+    userSelf = helpers.getUser(req);
+  }
+  next();
+});
+
+const server = app.listen(port, () =>
+  console.log(`Example app listening on port ${port}!`),
+);
+
+const io = require('socket.io')(server);
+
+// 監聽connection這個event
+io.on('connection', (socket) => {
+  // 監聽chat message 這個event
+  socket.on('chat message', (msg) => {
+    //console.log('message: ' + msg);
+    io.emit('chat message', { msg, userSelf });
+  });
+  // console.log('a user connected');
+  // socket.on('disconnect', () => {
+  //   console.log('user disconnect.');
+  // });
+});
+
+// This will emit the event to all connected sockets
+io.emit('some event', {
+  someProperty: 'some value',
+  otherProperty: 'other value',
+});
+
+io.on('connection', (socket) => {
+  socket.broadcast.emit('hi');
+});
+
+/*
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+});
+*/
 require('./routes/index')(app);
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
 module.exports = app;
