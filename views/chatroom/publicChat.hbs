@@ -6,7 +6,12 @@
     </div>
   </div>
   <div class="chat-room">
-    <ul id="messages"></ul>
+    <ul id="messages">
+      {{#each messages}}
+      <li>{{this.User.name}} : {{this.message}}</li>
+      {{/each}}
+
+    </ul>
     <form id="chatroom" action="/public" method="POST">
       <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
     </form>

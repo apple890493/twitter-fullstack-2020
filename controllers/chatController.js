@@ -1,11 +1,21 @@
 const bcrypt = require('bcryptjs');
 const db = require('../models');
 const User = db.User;
+const Public = db.Public;
 const { Op } = require('sequelize');
 const helpers = require('../_helpers');
 
 const chatController = {
-  getChatRoom: (req, res) => res.render('chatroom/publicChat'),
+  getChatRoom: (req, res) => {
+    Public.findAll({ include: [User] }).then((messages) => {
+      if (messages) {
+        let msg = messages.map((m) => m.dataValues);
+        return res.render('chatroom/publicChat', {
+          messages: msg,
+        });
+      }
+    });
+  },
   getMessage: (req, res) => {
     return res.render('chatroom/publicChat');
   },
@@ -16,6 +26,10 @@ const chatController = {
     let io = req.app.get('socketio');
 
     io.emit('public', { user, message });
+
+    Public.create({ UserId: helpers.getUser(req).id, message }).then(() => {
+      return res.redirect('/chatroom');
+    });
   },
 };
 
