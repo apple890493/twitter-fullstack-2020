@@ -7,6 +7,10 @@ const helpers = require('../_helpers');
 
 const chatController = {
   getChatRoom: (req, res) => {
+    let username = helpers.getUser(req).name;
+    let io = req.app.get('socketio');
+
+    //io.emit('connection', { name: username });
     Public.findAll({ include: [User] }).then((messages) => {
       if (messages) {
         let msg = messages.map((m) => m.dataValues);

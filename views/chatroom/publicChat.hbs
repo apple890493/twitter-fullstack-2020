@@ -2,40 +2,46 @@
   {{> left-column}}
   <div class="online-list">
     <div class="online-list-title">
-      <div class="online-list-title-text">上線使用者(5)</div>
+      <div class="online-list-title-text">上線使用者(<span id="onlineUserCount">0</span>)</div>
     </div>
   </div>
   <div class="chat-room">
-    <ul id="messages">
+    <div class="notice">
+
+    </div>
+    <div id="messages">
       {{#each messages}}
-      <li>{{this.User.name}} : {{this.message}}</li>
-      {{/each}}
+      <div class="messagge">{{this.User.name}} : {{this.message}}</li>
+        {{/each}}
 
-    </ul>
-    <form id="chatroom" action="/public" method="POST">
-      <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
-    </form>
+      </div>
+      <form id="chatroom" action="/public" method="POST">
+        <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
+      </form>
+    </div>
   </div>
-</div>
 
-{{!-- <script src="/socket.io/socket.io.js"></script>
+  {{!-- <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
-{{!-- <script src="../../public/javascripts/chat.js"></script> --}}
+  {{!-- <script src="../../public/javascripts/chat.js"></script> --}}
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
-  $(function () {
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script>
+
     let socket = io();
+    let noticelist = document.querySelector('#notice');
+    let messageslist = document.querySelector('#messages');
+    let userCount = document.querySelector('#onlineUserCount');
 
-
-    // 接收到chat message這個event，就執行function的事
+    socket.on('online', (amount => {
+      console.log("@@@@@", amount)
+      userCount.innerHTML = amount;
+    }))
     socket.on('public', (data) => {
       let { user, message } = data;
-      let item = `${user}:${message}`
-      $('#messages').append($('<li>').text(item));
-    });
-  });
+      let item = `${user}: ${message}`;
+      noticelist.innerHTML += `< div class= "msg" > ${item}</div > `
+    })
 
-
-</script>
+  </script>
