@@ -60,6 +60,5 @@ const server = app.listen(port, () =>
 );
 const io = require('socket.io')(server);
 app.set('socketio', io);
-
 require('./routes/index')(app);
 module.exports = app;

@@ -155,9 +155,9 @@ const userController = {
       //console.log(followings.includes(Number(req.params.id)));
       const likes = helpers.getUser(req).Likes
         ? helpers
-            .getUser(req)
-            .Likes.filter((u) => u.Position === 'tweet')
-            .map((t) => t.PositionId)
+          .getUser(req)
+          .Likes.filter((u) => u.Position === 'tweet')
+          .map((t) => t.PositionId)
         : [];
 
       //console.log(likes);
@@ -221,9 +221,7 @@ const userController = {
       let uniqueTweets = [
         ...new Set([user.toJSON().Replies.map((i) => i.TweetId)]),
       ];
-
       //console.log('tweets id', uniqueTweets);
-
       return Reply.findAll({
         where: { id: repliesIds },
         include: [
