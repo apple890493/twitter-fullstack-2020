@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
 const middleware = require('./config/middleware');
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -54,6 +55,15 @@ app.use((req, res, next) => {
 
 require('./routes/index')(app);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const server = app.listen(port, () =>
+  console.log(`Example app listening on port ${port}!`),
+);
+
+const io = require('socket.io')(server);
+
+// 監聽connection這個event，如果觸發則回傳訊息到console
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
 
 module.exports = app;
