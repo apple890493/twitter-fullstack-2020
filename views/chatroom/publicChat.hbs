@@ -4,6 +4,9 @@
     <div class="online-list-title">
       <div class="online-list-title-text">上線使用者(<span id="onlineUserCount">0</span>)</div>
     </div>
+    <div class="online-user-list">
+
+    </div>
   </div>
   <div class="chat-room">
     <div class="notice">
@@ -11,37 +14,62 @@
     </div>
     <div id="messages">
       {{#each messages}}
-      <div class="messagge">{{this.User.name}} : {{this.message}}</li>
-        {{/each}}
-
-      </div>
-      <form id="chatroom" action="/public" method="POST">
-        <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
-      </form>
+      <div class="messagge">{{this.User.name}} : {{this.message}}</div>
+      {{/each}}
     </div>
+    <form id="chatroom" action="/public" method="POST">
+      <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
+    </form>
   </div>
+</div>
 
-  {{!-- <script src="/socket.io/socket.io.js"></script>
+{{!-- <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
-  {{!-- <script src="../../public/javascripts/chat.js"></script> --}}
+{{!-- <script src="../../public/javascripts/chat.js"></script> --}}
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
 
-    let socket = io();
-    let noticelist = document.querySelector('#notice');
-    let messageslist = document.querySelector('#messages');
-    let userCount = document.querySelector('#onlineUserCount');
+  let socket = io();
+  let noticelist = document.querySelector('#notice');
+  let messageslist = document.getElementById('messages');
+  let userCount = document.querySelector('#onlineUserCount');
+  let userlist = document.querySelector('.online-user-list');
 
-    socket.on('online', (amount => {
-      console.log("@@@@@", amount)
-      userCount.innerHTML = amount;
-    }))
-    socket.on('public', (data) => {
-      let { user, message } = data;
-      let item = `${user}: ${message}`;
-      noticelist.innerHTML += `< div class= "msg" > ${item}</div > `
+  socket.on('online', (amount => {
+    console.log("@@@@@", amount)
+    userCount.innerHTML = amount;
+  }))
+  socket.on('onlineUsers', (data) => {
+    console.log(data)
+    userCount.innerHTML = data.length;
+    let all = ''
+    data.forEach(user => {
+      let each = `<div class="onlineuser">
+        <p>${user.id}</p>
+        <div class="tweet-user-avatar"
+              style="width: 50px;height:50px;background:url(${user.avatar})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;">
+            </div>
+            <p>${user.name}<p>
+              <p>@${user.account}<p>
+      </div>`
+      all += each
     })
 
-  </script>
+    userlist.innerHTML = all;
+  })
+  socket.on('public', (data) => {
+    //console.log(data)
+    let { user, message } = data;
+    let item = `${user}: ${message}`;
+    console.log(item)
+    console.log(messageslist);
+    messageslist.innerHTML += `<div class= "msg">${item}</div> `
+  })
+
+  socket.on('message', (data) => {
+    console.log(data);
+  })
+
+</script>

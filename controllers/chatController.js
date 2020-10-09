@@ -5,12 +5,18 @@ const Public = db.Public;
 const { Op } = require('sequelize');
 const helpers = require('../_helpers');
 
+const onlineUserCount = 0;
+const onlineUsers = [];
+
 const chatController = {
   getChatRoom: (req, res) => {
     let username = helpers.getUser(req).name;
     let io = req.app.get('socketio');
 
-    //io.emit('connection', { name: username });
+    let { id, name, account, avatar } = helpers.getUser(req);
+
+    io.emit('direct', { id, name, account, avatar });
+
     Public.findAll({ include: [User] }).then((messages) => {
       if (messages) {
         let msg = messages.map((m) => m.dataValues);
