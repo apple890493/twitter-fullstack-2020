@@ -52,8 +52,14 @@ app.use((req, res, next) => {
 
   next();
 });
+let userSelf;
 
-require('./routes/index')(app);
+app.use((req, res, next) => {
+  if (helpers.getUser(req)) {
+    userSelf = helpers.getUser(req);
+  }
+  next();
+});
 
 const server = app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`),
@@ -61,9 +67,35 @@ const server = app.listen(port, () =>
 
 const io = require('socket.io')(server);
 
-// 監聽connection這個event，如果觸發則回傳訊息到console
+// 監聽connection這個event
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  // 監聽chat message 這個event
+  socket.on('chat message', (msg) => {
+    //console.log('message: ' + msg);
+    io.emit('chat message', { msg, userSelf });
+  });
+  // console.log('a user connected');
+  // socket.on('disconnect', () => {
+  //   console.log('user disconnect.');
+  // });
 });
 
+// This will emit the event to all connected sockets
+io.emit('some event', {
+  someProperty: 'some value',
+  otherProperty: 'other value',
+});
+
+io.on('connection', (socket) => {
+  socket.broadcast.emit('hi');
+});
+
+/*
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+});
+*/
+require('./routes/index')(app);
 module.exports = app;
