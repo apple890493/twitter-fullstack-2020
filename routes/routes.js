@@ -8,6 +8,7 @@ const adminController = require('../controllers/adminController');
 const userController = require('../controllers/userController');
 const tweetController = require('../controllers/tweetController');
 const followshipController = require('../controllers/followshipController');
+const chatController = require('../controllers/chatController');
 
 const multer = require('multer');
 const upload = multer({ dest: 'temp/' });
@@ -80,9 +81,6 @@ router.post(
   userAuthenticated,
   tweetController.postReplies,
 );
-
-//router.post('/api/users/:id', userController.putUserSetting);
-//router.get('/api/users/:id', userController.getUserSettingPage);
 
 router.get('/users/self', userAuthenticated, userController.getSelf);
 router.get(
@@ -157,4 +155,5 @@ router.delete(
 router.get('/api/users/:id', userController.getEditPage);
 router.post('/api/users/:id', userAuthenticated, userController.postEditPage);
 
+router.get('/chatroom', chatController.getChatRoom);
 module.exports = router;
