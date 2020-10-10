@@ -15,8 +15,6 @@ const chatController = {
 
     let { id, name, account, avatar } = helpers.getUser(req);
 
-    io.emit('direct', { id, name, account, avatar });
-
     Public.findAll({ include: [User] }).then((messages) => {
       if (messages) {
         let msg = messages.map((m) => m.dataValues);

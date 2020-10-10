@@ -72,49 +72,24 @@ const server = app.listen(port, () =>
 const io = require('socket.io')(server);
 app.set('socketio', io);
 
-/** chat room**/
-
-io.on('connection', async (socket) => {
+/** chat room **/
+io.on('connection', (socket) => {
   // 把上線使用者的資料放入陣列儲存 並去重複
-  // enter chat room push user data to onlineUsers and filter repeat
   onlineUsers.push({ id, name, account, avatar });
   let set = new Set();
   onlineUsers = onlineUsers.filter((item) =>
     !set.has(item.id) ? set.add(item.id) : false,
   );
-
-  // get current user
   const user = onlineUsers.find((user) => user.id === id);
-  user.currentUser = true;
+  user.current = true;
 
-  // server 發event 把歡迎資訊給前端給前端
-  // server message
   socket.emit('message', `Hello, ${user.name}`);
   socket.broadcast.emit('message', `${user.name} join chatroom`);
-
-  // update online users
   io.emit('onlineUsers', onlineUsers);
 
-  // user emit message to all user
-  socket.on('chat', (data) => {
-    Message.create({ message: data, UserId: user.id });
-    io.emit(
-      'chat',
-      formatMessage(user.name, data, user.avatar, user.currentUser),
-    );
-  });
-
-  // listen typing
-  socket.on('typing', (data) => {
-    data.name = user.name;
-    socket.broadcast.emit('typing', data);
-  });
-
-  // user leave room, reset onlineUsers
   socket.on('disconnect', () => {
     onlineUsers = onlineUsers.filter((user) => user.id !== id);
     io.emit('onlineUsers', onlineUsers);
-    socket.broadcast.emit('typing', { isExist: false });
     socket.broadcast.emit('message', `${user.name} left chatroom`);
   });
 });

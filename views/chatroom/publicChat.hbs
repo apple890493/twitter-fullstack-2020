@@ -23,10 +23,6 @@
   </div>
 </div>
 
-{{!-- <script src="/socket.io/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
-{{!-- <script src="../../public/javascripts/chat.js"></script> --}}
-
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
@@ -42,11 +38,22 @@
     userCount.innerHTML = amount;
   }))
   socket.on('onlineUsers', (data) => {
+    if (data.length === 1) {
+      if (!data[0].id) {
+        userCount.innerHTML = 0;
+        userlist.innerHTML = '';
+        return '';
+      }
+    }
     console.log(data)
+    data = data.filter(e => e.id !== undefined)
     userCount.innerHTML = data.length;
-    let all = ''
+
+    let all = '';
+
     data.forEach(user => {
-      let each = `<div class="onlineuser">
+      if (user.id) {
+        let each = `<div class="onlineuser">
         <p>${user.id}</p>
         <div class="tweet-user-avatar"
               style="width: 50px;height:50px;background:url(${user.avatar})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;">
@@ -54,7 +61,10 @@
             <p>${user.name}<p>
               <p>@${user.account}<p>
       </div>`
-      all += each
+        all += each
+      }
+
+
     })
 
     userlist.innerHTML = all;
