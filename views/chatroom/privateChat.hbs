@@ -1,0 +1,82 @@
+<div class="container-chat">
+  {{> left-column}}
+  <div class="online-list">
+    <div class="online-list-title">
+      <div class="online-list-title-text">訊息</div>
+    </div>
+    <div class="message-user-list">
+
+    </div>
+  </div>
+
+  <div class="chat-room">
+    <div class="chat-room-title"></div>
+    <div id="messages">
+      {{#each messages}}
+      <div class="messagge">{{this.User.name}} : {{this.message}}</div>
+      {{/each}}
+    </div>
+    <form id="chatroom" action="/private/" method="POST">
+      <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
+    </form>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+
+  let socket = io();
+  let messageslist = document.getElementById('messages');
+  let messageuserlist = document.querySelector('.message-user-list');
+
+  socket.on('online', (amount => {
+    console.log("@@@@@", amount)
+    userCount.innerHTML = amount;
+  }))
+  socket.on('onlineUsers', (data) => {
+    if (data.length === 1) {
+      if (!data[0].id) {
+        userCount.innerHTML = 0;
+        userlist.innerHTML = '';
+        return '';
+      }
+    }
+    console.log(data)
+    data = data.filter(e => e.id !== undefined)
+    userCount.innerHTML = data.length;
+
+    let all = '';
+
+    data.forEach(user => {
+      if (user.id) {
+        let each = `<div class="onlineuser">
+        <p>${user.id}</p>
+        <div class="tweet-user-avatar"
+              style="width: 50px;height:50px;background:url(${user.avatar})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;">
+            </div>
+            <p>${user.name}<p>
+              <p>@${user.account}<p>
+      </div>`
+        all += each
+      }
+
+
+    })
+
+    userlist.innerHTML = all;
+  })
+  socket.on('public', (data) => {
+    //console.log(data)
+    let { user, message } = data;
+    let item = `${user}: ${message}`;
+    console.log(item)
+    console.log(messageslist);
+    messageslist.innerHTML += `<div class= "msg">${item}</div> `
+  })
+
+  socket.on('message', (data) => {
+    console.log(data);
+  })
+
+</script>
