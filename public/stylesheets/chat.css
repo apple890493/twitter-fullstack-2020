@@ -227,3 +227,7 @@
   border-radius: 100px;
   width: fit-content;
 }
+
+#chat-room {
+  margin-left: 0ex !important;
+}
