@@ -38,6 +38,21 @@ const chatController = {
     let sender = helpers.getUser(req);
     let receiever = req.params.id;
 
+    Private.findAll({
+      where: {
+        [Op.and]: [{ SendId }, { ReceiveId }],
+        include: [
+          { model: User, as: 'Sender' },
+          { model: User, as: 'Receiver' },
+        ],
+      },
+    }).then((messages) => {
+      // let history = messages.map(m=>({
+
+      // }))
+      console.log(messages);
+    });
+
     User.findByPk(receiever).then((user) => {
       let visitUser = user.toJSON();
       return res.render('chatroom/privateChat', { visitUser });
