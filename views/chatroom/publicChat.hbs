@@ -1,14 +1,64 @@
 <div class="container-chat">
   {{> left-column}}
-  <div class="online-list">
+  <div class="public-online-list">
     <div class="online-list-title">
+<<<<<<< HEAD
       <div class="online-list-title-text">上線使用者(<span id="onlineUserCount">0</span>)</div>
     </div>
     <div class="online-user-list">
 
+=======
+      上線使用者(5)
+>>>>>>> f/mainview
     </div>
+    <div class="public-list">
+      <div class="online-list-content">
+        <div class="online-list-avatar" style="height:50px;width:50px;background:
+        url(https://img.technews.tw/wp-content/uploads/2019/08/21165024/Spider-Man-624x375.jpg),#C4C4C4;
+        background-position:center;background-size:cover;border-radius: 100px;">
+        </div>
+        <div class="online-list-name">
+          nono
+          <span>@nonolin</span>
+        </div>
+      </div>
+      {{!-- ------------------------------------------ --}}
+      <div class="online-list-content">
+        <div class="online-list-avatar" style="height:60px;width:60px;background:
+            url(https://img.technews.tw/wp-content/uploads/2019/08/21165024/Spider-Man-624x375.jpg),#C4C4C4;
+            background-position:center;background-size:cover;border-radius: 100px;">
+        </div>
+        <div class="online-list-name">
+          nono
+          <span>@nonolin</span>
+        </div>
+      </div>
+      <div class="online-list-content">
+        <div class="online-list-avatar" style="height:60px;width:60px;background:
+            url(https://img.technews.tw/wp-content/uploads/2019/08/21165024/Spider-Man-624x375.jpg),#C4C4C4;
+            background-position:center;background-size:cover;border-radius: 100px;">
+        </div>
+        <div class="online-list-name">
+          nono
+          <span>@nonolin</span>
+        </div>
+      </div>
+      <div class="online-list-content">
+        <div class="online-list-avatar" style="height:60px;width:60px;background:
+            url(https://img.technews.tw/wp-content/uploads/2019/08/21165024/Spider-Man-624x375.jpg),#C4C4C4;
+            background-position:center;background-size:cover;border-radius: 100px;">
+        </div>
+        <div class="online-list-name">
+          nono
+          <span>@nonolin</span>
+        </div>
+      </div>
+      {{!-- ------------------------------------------ --}}
+    </div>
+
   </div>
   <div class="chat-room">
+<<<<<<< HEAD
     <div class="notice">
 
     </div>
@@ -20,12 +70,33 @@
     <form id="chatroom" action="/public" method="POST">
       <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
     </form>
+=======
+    <div class="chat-room-title">
+      公開聊天室
+    </div>
+    <div class="chat-room-content">
+      <div class="chat-content" id="messages"></div>
+    </div>
+    <div class="chat-room-footer">
+      <form id="chatroom" action="
+      /public" method="POST">
+        <div class="input-group p-2">
+          <input type="text" id="m" autocomplete="off" name="message" class="form-control" placeholder="輸入訊息...">
+          <div class="input-group-append">
+            <button class="btn btn-send" type="submit" id="button-send"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+>>>>>>> f/mainview
   </div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
+{{!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> --}}
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+<<<<<<< HEAD
 
   let socket = io();
   let noticelist = document.querySelector('#notice');
@@ -82,4 +153,15 @@
     console.log(data);
   })
 
+=======
+  $(function () {
+    let socket = io();
+    // 接收到chat message這個event，就執行function的事
+    socket.on('public', (data) => {
+      let { user, message } = data;
+      let item = `${user}:${message}`
+      $('#messages').append($('<div class="msg2">').text(item));
+    });
+  });
+>>>>>>> f/mainview
 </script>

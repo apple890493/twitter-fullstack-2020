@@ -77,6 +77,10 @@ const chatController = {
       res.redirect(`/message/${receiever}`);
     }
   },
+  getPrivateRoom: (req, res) => res.render('chatroom/privateChat'),
+  getMessage: (req, res) => {
+    return res.render('chatroom/publicChat');
+  },
   postMessage: (req, res) => {
     let message = req.body.message;
     let user = helpers.getUser(req).name;
@@ -86,7 +90,8 @@ const chatController = {
     io.emit('public', { user, message });
 
     Public.create({ UserId: helpers.getUser(req).id, message }).then(() => {
-      return res.redirect('/chatroom');
+      //return res.redirect('/chatroom');
+      res.redirect('javascript:history.back()');
     });
   },
 };

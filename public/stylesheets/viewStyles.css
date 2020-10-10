@@ -1321,13 +1321,3 @@ a:hover {
 .tweetWordTipNormal {
   color: green;
 }
-
-/* 聊天室 */
-
-.container-chat {
-  display: grid;
-  /* grid-template-columns: 27% 43.5% 29%; */
-  grid-template-columns: 1fr 350px 300px 500px 1fr;
-  height: 100vh;
-  width: 100%;
-}

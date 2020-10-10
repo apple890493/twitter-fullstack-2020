@@ -156,6 +156,7 @@ router.get('/api/users/:id', userController.getEditPage);
 router.post('/api/users/:id', userAuthenticated, userController.postEditPage);
 
 router.get('/chatroom', userAuthenticated, chatController.getChatRoom);
+router.get('/message', userAuthenticated, chatController.getPrivateRoom);
 router.post('/public', userAuthenticated, chatController.postMessage);
 
 router.get('/message', userAuthenticated, chatController.getPrivateMessagePage);

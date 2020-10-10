@@ -1,5 +1,6 @@
 <div class="container-chat">
   {{> left-column}}
+  {{!-- <<<<<<< HEAD
   <div class="online-list">
     <div class="online-list-title">
       <div class="online-list-title-text">訊息</div>
@@ -21,6 +22,70 @@
     </form>
   </div>
 </div>
+
+
+======= --}}
+  <div class="private-center-list">
+    <div class="private-center-title">
+      <div class="online-list-title-text">訊息</div>
+      <i class="icon icon-message2" style="line-height: 16px;"></i>
+    </div>
+    <div class="private-list">
+      <div class="private-tweets-content">
+        <div class="private-left-item">
+          <a href="/users/{{this.User.id}}">
+            <div class=""
+              style="width: 50px;height:50px;background:url({{this.User.avatar}})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
+            </div>
+          </a>
+        </div>
+        <div class="private-right-item">
+          <div class="title">
+            <span class="name">
+              <a href="/users/{{this.User.id}}/tweets">
+                {{this.User.name}}asdas
+                <span class="time">
+                  @{{this.User.account}}asdas
+                </span>
+              </a>
+            </span>
+            <span class="time">
+              {{moment this.createdAt}}
+            </span>
+          </div>
+          <a href="/tweets/{{this.id}}" class="body">
+            {{subText this.description 100}}dweddd dweddd dweddddw edddd weddd dweddd dweddd d
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="private-chat-room">
+    <div class="private-chat-room-title">
+      <a href="">nono</a>
+      <span>@nonolin</span>
+    </div>
+
+
+    <div class="chat-room-content">
+      <div class="chat-content" id="messages"></div>
+    </div>
+
+
+    <div class="chat-room-footer">
+      <form id="chatroom" action="
+        /public" method="POST">
+        <div class="input-group p-2">
+          <input type="text" id="m" autocomplete="off" name="message" class="form-control" placeholder="輸入訊息...">
+          <div class="input-group-append">
+            <button class="btn btn-send" type="submit" id="button-send"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -52,5 +117,4 @@
       console.log(`recieve${sender}'s message:${message}`)
     }
   })
-
 </script>
