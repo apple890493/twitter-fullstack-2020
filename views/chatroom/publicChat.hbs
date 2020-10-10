@@ -4,48 +4,51 @@
     <div class="online-list-title">
       上線使用者(5)
     </div>
-    <div class="online-list-content">
-      <div class="online-list-avatar" style="height:60px;width:60px;background:
+    <div class="public-list">
+      <div class="online-list-content">
+        <div class="online-list-avatar" style="height:50px;width:50px;background:
         url(https://img.technews.tw/wp-content/uploads/2019/08/21165024/Spider-Man-624x375.jpg),#C4C4C4;
         background-position:center;background-size:cover;border-radius: 100px;">
+        </div>
+        <div class="online-list-name">
+          nono
+          <span>@nonolin</span>
+        </div>
       </div>
-      <div class="online-list-name">
-        nono
-        <span>@nonolin</span>
-      </div>
-    </div>
-    {{!-- ------------------------------------------ --}}
-    <div class="online-list-content">
-      <div class="online-list-avatar" style="height:60px;width:60px;background:
+      {{!-- ------------------------------------------ --}}
+      <div class="online-list-content">
+        <div class="online-list-avatar" style="height:60px;width:60px;background:
             url(https://img.technews.tw/wp-content/uploads/2019/08/21165024/Spider-Man-624x375.jpg),#C4C4C4;
             background-position:center;background-size:cover;border-radius: 100px;">
+        </div>
+        <div class="online-list-name">
+          nono
+          <span>@nonolin</span>
+        </div>
       </div>
-      <div class="online-list-name">
-        nono
-        <span>@nonolin</span>
-      </div>
-    </div>
-    <div class="online-list-content">
-      <div class="online-list-avatar" style="height:60px;width:60px;background:
+      <div class="online-list-content">
+        <div class="online-list-avatar" style="height:60px;width:60px;background:
             url(https://img.technews.tw/wp-content/uploads/2019/08/21165024/Spider-Man-624x375.jpg),#C4C4C4;
             background-position:center;background-size:cover;border-radius: 100px;">
+        </div>
+        <div class="online-list-name">
+          nono
+          <span>@nonolin</span>
+        </div>
       </div>
-      <div class="online-list-name">
-        nono
-        <span>@nonolin</span>
-      </div>
-    </div>
-    <div class="online-list-content">
-      <div class="online-list-avatar" style="height:60px;width:60px;background:
+      <div class="online-list-content">
+        <div class="online-list-avatar" style="height:60px;width:60px;background:
             url(https://img.technews.tw/wp-content/uploads/2019/08/21165024/Spider-Man-624x375.jpg),#C4C4C4;
             background-position:center;background-size:cover;border-radius: 100px;">
+        </div>
+        <div class="online-list-name">
+          nono
+          <span>@nonolin</span>
+        </div>
       </div>
-      <div class="online-list-name">
-        nono
-        <span>@nonolin</span>
-      </div>
+      {{!-- ------------------------------------------ --}}
     </div>
-    {{!-- ------------------------------------------ --}}
+
   </div>
   <div class="chat-room">
     <div class="chat-room-title">
@@ -82,7 +85,7 @@
     socket.on('public', (data) => {
       let { user, message } = data;
       let item = `${user}:${message}`
-      $('#messages').append($('<div class="msg">').text(item));
+      $('#messages').append($('<div class="msg2">').text(item));
     });
   });
 </script>
