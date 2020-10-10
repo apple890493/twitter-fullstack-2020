@@ -18,7 +18,7 @@ const chatController = {
         msg.forEach((m) => {
           m.isSelf = Number(m.UserId) === userSelf;
         });
-        console.log('@@@', msg);
+        //console.log('@@@', msg);
         return res.render('chatroom/publicChat', {
           messages: msg,
         });
@@ -89,14 +89,15 @@ const chatController = {
   postMessage: (req, res) => {
     let message = req.body.message;
     let user = helpers.getUser(req).name;
-    //console.log(helpers.getUser(req).name);
+    let self = helpers.getUser(req).id;
+    console.log(helpers.getUser(req).id);
     let io = req.app.get('socketio');
 
-    io.emit('public', { user, message });
+    io.emit('public', { user, message, self });
 
     Public.create({ UserId: helpers.getUser(req).id, message }).then(() => {
       //return res.redirect('/chatroom');
-      res.redirect('javascript:history.back()');
+      return res.redirect('javascript:history.back()');
     });
   },
 };

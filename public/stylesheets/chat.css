@@ -178,6 +178,7 @@
 
 #messages {
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 #messages .msg {
   /* min-height: 53.33203125em; */
@@ -214,8 +215,8 @@
 }
 
 #messages .msg3 {
-  border: 1px solid gray;
-  display: inline-block;
+  /* border: 1px solid gray; */
+  display: block;
   clear: both;
   padding: 7px 13px;
   font-size: 15px;
@@ -224,4 +225,5 @@
   background-color: #ddd;
   color: #fff;
   border-radius: 100px;
+  width: fit-content;
 }
