@@ -18,7 +18,7 @@ const chatController = {
         msg.forEach((m) => {
           m.isSelf = Number(m.UserId) === userSelf;
         });
-        //console.log('@@@', msg);
+        console.log('@@@', msg);
         return res.render('chatroom/publicChat', {
           messages: msg,
         });
@@ -34,15 +34,15 @@ const chatController = {
       where: { [Op.or]: { SendId: userSelf, ReceiveId: userSelf } },
       order: [['createdAt', 'DESC']],
     }).then((data) => {
-      //console.log(data);
-      if (data) {
+      // console.log(data);
+      if (data.length > 0) {
         let latestId =
           Number(data[0].SendId) === userSelf
             ? data[0].ReceiveId
             : data[0].SendId;
         res.redirect(`/message/${latestId}`);
       } else {
-        res.redirect('back');
+        res.render('chatroom/privateChat', { empty: '尚未有訊息!', isEmpty: true });
       }
     });
 
