@@ -132,7 +132,7 @@
   display: flex;
   flex-direction: column-reverse;
   padding-bottom: 10px;
-  /* overflow: scroll; */
+  overflow-y: scroll;
 }
 
 .chat-room-footer {
@@ -189,52 +189,59 @@
 /* 訊息 */
 /* user side */
 
-#messages {
-  overflow-y: scroll;
-  overflow-x: hidden;
+.chat-content1 { 
+  display: flex;
+  justify-content: flex-end;
 }
-#messages .msg {
-  /* min-height: 53.33203125em; */
+
+.chat-content2 { 
+  display: flex;
+  justify-content: flex-start;
+
+}
+
+.msg {
   max-width: 30em;
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
   margin: 2px;
   clear: both;
   padding: 7px 13px;
   font-size: 15px;
   line-height: 1.4;
-  float: right;
   background-color: #ff6600;
   color: #fff;
-  border-bottom-left-radius: 100px;
-  border-top-left-radius: 100px;
-  border-top-right-radius: 100px;
+  border-bottom-left-radius: 30px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
 /* another side */
-#messages .msg2 {
+.msg2 {
   max-width: 30em;
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
   margin: 2px;
   clear: both;
   padding: 7px 13px;
   font-size: 15px;
   line-height: 1.4;
-  float: left;
   background-color: #ddd;
   color: black;
-  border-bottom-right-radius: 100px;
-  border-top-left-radius: 100px;
-  border-top-right-radius: 100px;
+  border-bottom-right-radius: 30px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
-#messages .msg3 {
-  /* border: 1px solid gray; */
+
+.msg3 {
+  border: 1px solid gray;
+
   display: block;
   clear: both;
   padding: 7px 13px;
   font-size: 15px;
   line-height: 1.4;
-  float: center;
   background-color: #ddd;
   color: #fff;
   border-radius: 100px;
