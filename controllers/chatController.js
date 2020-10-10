@@ -6,6 +6,7 @@ const helpers = require('../_helpers');
 
 const chatController = {
   getChatRoom: (req, res) => res.render('chatroom/publicChat'),
+  getPrivateRoom: (req, res) => res.render('chatroom/privateChat'),
   getMessage: (req, res) => {
     return res.render('chatroom/publicChat');
   },
