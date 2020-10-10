@@ -117,20 +117,22 @@
 }
 
 .chat-room-content {
-  height: 80%;
+  height: 85vh;
   display: flex;
   flex-direction: column-reverse;
+  padding-bottom: 10px;
   /* overflow: scroll; */
 }
 
 .chat-room-footer {
   width: 600px;
   border-top: 1px solid #e6ecf0;
-  position: fixed;
+  /* position: fixed; */
   bottom: 0%;
   align-self: center;
   /* height: 50px; */
-  height: 10%;
+  height: fit-content;
+  margin-bottom: 5px;
 }
 
 .chat-room-footer .form-control:focus {

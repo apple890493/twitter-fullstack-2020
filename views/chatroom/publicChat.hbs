@@ -125,6 +125,14 @@
   socket.on('message', (data) => {
     let notice = `<div class="msg3">${data}</div>`
     messageslist.innerHTML += notice;
+
+
+    messageslist.scrollTop = messageslist.scrollHeight;
     //console.log(data);
   })
+
+  window.setInterval(function () {
+    //var elem = document.getElementById('data');
+    messageslist.scrollTop = messageslist.scrollHeight;
+  }, 3000);
 </script>
