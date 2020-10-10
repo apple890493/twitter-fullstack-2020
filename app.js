@@ -83,6 +83,8 @@ io.on('connection', (socket) => {
   const user = onlineUsers.find((user) => user.id === id);
   user.current = true;
 
+  socket.emit('self', user);
+
   socket.emit('message', `Hello, ${user.name}`);
   socket.broadcast.emit('message', `${user.name} join chatroom`);
   io.emit('onlineUsers', onlineUsers);

@@ -158,18 +158,14 @@ router.post('/api/users/:id', userAuthenticated, userController.postEditPage);
 router.get('/chatroom', userAuthenticated, chatController.getChatRoom);
 router.post('/public', userAuthenticated, chatController.postMessage);
 
+router.get('/message', userAuthenticated, chatController.getPrivateMessagePage);
 router.get(
-  '/privatemsg',
-  userAuthenticated,
-  chatController.getPrivateMessagePage,
-);
-router.get(
-  '/privatemsg/:id',
+  '/message/:id',
   userAuthenticated,
   chatController.getPrivateMessageToUser,
 );
 router.post(
-  '/privatemsg/:id',
+  '/message/:id',
   userAuthenticated,
   chatController.postPrivateMessages,
 );
