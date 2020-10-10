@@ -33,25 +33,6 @@
   <script src="/javascripts/checkPostTweet.js"></script>
   <script src="/javascripts/modal.js"></script>
   <script src="/javascripts/previewPic.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script>
-
-    let socket2 = io();
-  let nowUser2 = document.querySelector(".noti")
-  let number = nowUser2.innerText
-     socket2.emit('test', 'Hello Socket.IO');
-
-  socket2.on('private', user => {
-    console.log("start")
-    const { receiever } = user
-    console.log('!!!!!', receiever, number)
-    if (Number(receiever) === Number(number))
-      nowUser2.innerText += 'succuss'
-  })
-
-  </script>
-
 </body>
 
 </html>

@@ -74,8 +74,7 @@ const chatController = {
         SendId: sender,
         ReceiveId: receiever,
         message,
-      }).then((data) => {
-        io.emit('private', { message, data, receiever });
+      }).then(() => {
         res.redirect(`/message/${receiever}`);
       });
     } else {

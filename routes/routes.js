@@ -170,9 +170,5 @@ router.post(
   userAuthenticated,
   chatController.postPrivateMessages,
 );
-router.post(
-  '/private/:id',
-  userAuthenticated,
-  chatController.postPrivateMessages,
-);
+
 module.exports = router;

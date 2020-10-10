@@ -121,7 +121,6 @@
   display: flex;
   flex-direction: column-reverse;
   overflow-y: scroll;
-  overflow-x: hidden;
 }
 
 .chat-room-footer {
@@ -191,7 +190,6 @@
 }
 
 .msg {
-  float: right;
   max-width: 30em;
   display: flex;
   flex-direction: row;
@@ -209,7 +207,6 @@
 
 /* another side */
 .msg2 {
-  float: left;
   max-width: 30em;
   display: flex;
   flex-direction: row;
