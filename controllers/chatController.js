@@ -11,9 +11,14 @@ const onlineUsers = [];
 
 const chatController = {
   getChatRoom: (req, res) => {
+    let userSelf = Number(helpers.getUser(req).id);
     Public.findAll({ include: [User] }).then((messages) => {
       if (messages) {
         let msg = messages.map((m) => m.dataValues);
+        msg.forEach((m) => {
+          m.isSelf = Number(m.UserId) === userSelf;
+        });
+        console.log('@@@', msg);
         return res.render('chatroom/publicChat', {
           messages: msg,
         });

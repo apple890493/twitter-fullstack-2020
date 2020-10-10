@@ -18,7 +18,17 @@
 
     <div class="chat-room-content">
 
-      <div class="chat-content" id="messages"></div>
+      <div class="chat-content" id="messages">
+        {{#each messages}}
+
+        {{#if this.isSelf}}
+        <div class="msg">{{this.User.name}} : {{this.message}}</div>
+        {{else}}
+        <div class="msg2">{{this.User.name}} : {{this.message}}</div>
+        {{/if}}
+
+        {{/each}}
+      </div>
     </div>
 
     <div class="chat-room-footer">
