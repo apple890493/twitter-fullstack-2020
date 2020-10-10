@@ -10,6 +10,9 @@ module.exports = {
   moment: (a) => {
     return moment(a).fromNow(true);
   },
+  nowTime: (a) => {
+    return moment().format("hA")
+  },
   subText: (content, num) => {
     let count = Number(num) ? Number(num) : 50;
 
