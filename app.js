@@ -55,10 +55,53 @@ app.use((req, res, next) => {
   next();
 });
 
+let id, name, account, avatar;
+
+app.use((req, res, next) => {
+  if (helpers.getUser(req)) {
+    ({ id, name, account, avatar } = helpers.getUser(req));
+  }
+  next();
+});
+
+let onlineUsers = [];
+
 const server = app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`),
 );
 const io = require('socket.io')(server);
 app.set('socketio', io);
+
+/** chat room **/
+io.on('connection', (socket) => {
+  // 把上線使用者的資料放入陣列儲存 並去重複
+  onlineUsers.push({ id, name, account, avatar });
+  let set = new Set();
+  onlineUsers = onlineUsers.filter((item) =>
+    !set.has(item.id) ? set.add(item.id) : false,
+  );
+  const user = onlineUsers.find((user) => user.id === id);
+  user.current = true;
+
+  socket.emit('self', user);
+
+  socket.emit('message', `Hello, ${user.name}`);
+  socket.broadcast.emit('message', `${user.name} join chatroom`);
+  io.emit('onlineUsers', onlineUsers);
+
+  socket.on('disconnect', () => {
+    onlineUsers = onlineUsers.filter((user) => user.id !== id);
+    io.emit('onlineUsers', onlineUsers);
+    socket.broadcast.emit('message', `${user.name} left chatroom`);
+  });
+});
+
 require('./routes/index')(app);
 module.exports = app;
+
+// socket.on('greet', (name) => {
+//       let notice = `${name: username
+//     } is online`;
+//     console.log(notice);
+//       noticelist.innerHTML += `< div class= "notice" > ${ notice }</div > `
+//     })

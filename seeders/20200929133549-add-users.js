@@ -49,6 +49,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+    users.push(admin2);
     //console.log(users);
     return queryInterface.bulkInsert('Users', users, {});
     /*
