@@ -60,11 +60,16 @@
   font-size: 15px;
 }
 
-.private-tweets-content {
+.private-messages-content {
   border-bottom: 1px solid #e6ecf0;
   display: flex;
   align-items: center;
   height: 80px;
+}
+
+.private-messages-content:hover {
+  cursor: pointer;
+  background-color: #f5f8fa;
 }
 
 .private-left-item {
@@ -74,6 +79,8 @@
 
 .private-right-item {
   padding-right: 5px;
+  margin-left: 5px;
+  width: 350px;
 }
 
 .private-right-item .title {
@@ -95,6 +102,10 @@
 
 .private-right-item .body {
   font-size: 15px;
+}
+
+.private-right-item .title .time {
+  justify-self: end;
 }
 
 /* 公開聊天室 */
