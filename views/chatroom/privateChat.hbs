@@ -1,51 +1,62 @@
 <div class="container-chat">
   {{> left-column}}
-  {{!-- <<<<<<< HEAD
-  <div class="online-list">
-    <div class="online-list-title">
-      <div class="online-list-title-text">訊息</div>
-    </div>
-    <div class="message-user-list">
-
-    </div>
-  </div>
-
-  <div class="chat-room">
-    <div class="chat-room-title">{{visitUser.name}}</div>
-    <div id="messages">
-      {{#each messages}}
-      <div class="messagge">{{this.User.name}} : {{this.message}}</div>
-      {{/each}}
-    </div>
-    <form id="chatroom" action="/message/{{visitUser.id}}" method="POST">
-      <input id="m" autocomplete="off" name="message"><button type="submit">Send</button>
-    </form>
-  </div>
-</div>
-
-
-======= --}}
   <div class="private-center-list">
     <div class="private-center-title">
       <div class="online-list-title-text">訊息</div>
       <i class="icon icon-message2" style="line-height: 16px;"></i>
     </div>
     <div class="private-list">
-      <div class="private-tweets-content">
+      {{#each messages}}
+
+
+      {{#if this.isSelf}}
+
+      <div class="private-messages-content" onclick="location.href='/message/{{this.ReceiveId}}'">
         <div class="private-left-item">
-          <a href="/users/{{this.User.id}}">
+          <a href="/message/{{this.Receiver.id}}">
             <div class=""
-              style="width: 50px;height:50px;background:url({{this.User.avatar}})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
+              style="width: 50px;height:50px;background:url({{this.Receiver.avatar}})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
             </div>
           </a>
         </div>
         <div class="private-right-item">
           <div class="title">
             <span class="name">
-              <a href="/users/{{this.User.id}}/tweets">
-                {{this.User.name}}asdas
+              <a href="/message/{{this.User.id}}/tweets">
+                {{this.Receiver.name}}
                 <span class="time">
-                  @{{this.User.account}}asdas
+                  @{{this.Receiver.account}}
+                </span>
+              </a>
+            </span>
+            <span class="time" style="margin-left:2px">
+              {{moment this.createdAt}}
+            </span>
+          </div>
+          <div class="body">
+            you: {{subText this.message 100}}
+
+          </div>
+        </div>
+      </div>
+
+      {{else}}
+
+      <div class="private-messages-content" onclick="location.href='/message/{{this.SendId}}'">
+        <div class="private-left-item">
+          <a href="/message/{{this.Sender.id}}">
+            <div class=""
+              style="width: 50px;height:50px;background:url({{this.Sender.avatar}})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
+            </div>
+          </a>
+        </div>
+        <div class="private-right-item">
+          <div class="title">
+            <span class="name">
+              <a href="/message/{{this.Sender.id}}/tweets">
+                {{this.Sender.name}}
+                <span class="time">
+                  @{{this.Sender.account}}
                 </span>
               </a>
             </span>
@@ -53,28 +64,43 @@
               {{moment this.createdAt}}
             </span>
           </div>
-          <a href="/tweets/{{this.id}}" class="body">
-            {{subText this.description 100}}dweddd dweddd dweddddw edddd weddd dweddd dweddd d
-          </a>
+          <div class="body">
+            {{subText this.message 100}}
+
+          </div>
         </div>
       </div>
+
+      {{/if}}
+
+
+      {{/each}}
     </div>
   </div>
+
   <div class="private-chat-room">
     <div class="private-chat-room-title">
-      <a href="">nono</a>
-      <span>@nonolin</span>
+      <a href="/users/{{visitUser.id}}">{{visitUser.name}}</a>
+      <span>@{{visitUser.account}}</span>
     </div>
 
 
     <div class="chat-room-content">
-      <div class="chat-content" id="messages"></div>
+      <div class="chat-content" id="messages">
+        {{#each history}}
+        {{#if this.isSelf}}
+        <div class="msg">{{this.message}}</div>
+        {{else}}
+        <div class="msg2">{{this.message}}</div>
+        {{/if}}
+        {{/each}}
+      </div>
     </div>
 
 
     <div class="chat-room-footer">
       <form id="chatroom" action="
-        /public" method="POST">
+        /message/{{visitUser.id}}" method="POST">
         <div class="input-group p-2">
           <input type="text" id="m" autocomplete="off" name="message" class="form-control" placeholder="輸入訊息...">
           <div class="input-group-append">
@@ -85,8 +111,6 @@
     </div>
   </div>
 </div>
-
-
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
@@ -116,5 +140,12 @@
     if (Number(selfId) === Number(receiever)) {
       console.log(`recieve${sender}'s message:${message}`)
     }
+
+
   })
+
+  window.setInterval(function () {
+    //var elem = document.getElementById('data');
+    messageslist.scrollTop = messageslist.scrollHeight;
+  }, 3000);
 </script>

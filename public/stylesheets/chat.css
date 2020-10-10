@@ -60,11 +60,16 @@
   font-size: 15px;
 }
 
-.private-tweets-content {
+.private-messages-content {
   border-bottom: 1px solid #e6ecf0;
   display: flex;
   align-items: center;
   height: 80px;
+}
+
+.private-messages-content:hover {
+  cursor: pointer;
+  background-color: #f5f8fa;
 }
 
 .private-left-item {
@@ -74,6 +79,8 @@
 
 .private-right-item {
   padding-right: 5px;
+  margin-left: 5px;
+  width: 350px;
 }
 
 .private-right-item .title {
@@ -97,6 +104,10 @@
   font-size: 15px;
 }
 
+.private-right-item .title .time {
+  justify-self: end;
+}
+
 /* 公開聊天室 */
 .chat-room {
   grid-column-start: 4;
@@ -117,20 +128,22 @@
 }
 
 .chat-room-content {
-  height: 80%;
+  height: 85vh;
   display: flex;
   flex-direction: column-reverse;
+  padding-bottom: 10px;
   overflow-y: scroll;
 }
 
 .chat-room-footer {
   width: 600px;
   border-top: 1px solid #e6ecf0;
-  position: fixed;
+  /* position: fixed; */
   bottom: 0%;
   align-self: center;
   /* height: 50px; */
-  height: 10%;
+  height: fit-content;
+  margin-bottom: 5px;
 }
 
 .chat-room-footer .form-control:focus {
@@ -175,9 +188,6 @@
 
 /* 訊息 */
 /* user side */
-/* .chat-content {
-  overflow-y: scroll;
-} */
 
 .chat-content1 { 
   display: flex;
@@ -187,6 +197,7 @@
 .chat-content2 { 
   display: flex;
   justify-content: flex-start;
+
 }
 
 .msg {
@@ -222,8 +233,10 @@
   border-top-right-radius: 30px;
 }
 
+
 .msg3 {
   border: 1px solid gray;
+
   display: block;
   clear: both;
   padding: 7px 13px;
@@ -232,4 +245,9 @@
   background-color: #ddd;
   color: #fff;
   border-radius: 100px;
+  width: fit-content;
+}
+
+#chat-room {
+  margin-left: 0ex !important;
 }

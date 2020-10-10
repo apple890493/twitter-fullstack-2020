@@ -68,6 +68,18 @@
     console.log("@@@@@", amount)
     userCount.innerHTML = amount;
   }))
+
+  let selfId = '';
+
+  socket.on('self', user => {
+    //console.log('SELF:', selfId);
+    if (user.current) {
+      selfId = user.id;
+    }
+    //console.log(user);
+    //console.log('SELF:', selfId);
+  })
+
   socket.on('onlineUsers', (data) => {
     if (data.length === 1) {
       if (!data[0].id) {
@@ -101,15 +113,32 @@
     userlist.innerHTML = all;
   })
   socket.on('public', (data) => {
-    //console.log(data)
+
     let { user, message } = data;
     let item = `${user}: ${message}`;
-    console.log(item)
-    console.log(messageslist);
-    messageslist.innerHTML += `<div class= "msg">${item}</div> `
+    console.log(typeof (selfId))
+    console.log(typeof (data.self))
+    //console.log(messageslist);
+    if (Number(selfId) === Number(data.self)) {
+      messageslist.innerHTML += `<div class="msg">${item}</div> `
+    } else {
+      messageslist.innerHTML += `<div class="msg2">${item}</div> `
+    }
+
   })
 
   socket.on('message', (data) => {
-    console.log(data);
+
+    let notice = `<div class="msg3">${data}</div>`
+    messageslist.innerHTML += notice;
+
+
+    messageslist.scrollTop = messageslist.scrollHeight;
+    //console.log(data);
   })
+
+  window.setInterval(function () {
+    //var elem = document.getElementById('data');
+    messageslist.scrollTop = messageslist.scrollHeight;
+  }, 3000);
 </script>

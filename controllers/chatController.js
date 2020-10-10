@@ -18,7 +18,7 @@ const chatController = {
         msg.forEach((m) => {
           m.isSelf = Number(m.UserId) === userSelf;
         });
-        console.log('@@@', msg);
+        //console.log('@@@', msg);
         return res.render('chatroom/publicChat', {
           messages: msg,
         });
@@ -28,19 +28,112 @@ const chatController = {
     });
   },
   getPrivateMessagePage: (req, res) => {
-    let userSelf = helpers.getUser(req);
+    let userSelf = Number(helpers.getUser(req).id);
 
-    let io = req.app.get('socketio');
+    Private.findAll({
+      where: { [Op.or]: { SendId: userSelf, ReceiveId: userSelf } },
+      order: [['createdAt', 'DESC']],
+    }).then((data) => {
+      //console.log(data);
+      if (data) {
+        let latestId =
+          Number(data[0].SendId) === userSelf
+            ? data[0].ReceiveId
+            : data[0].SendId;
+        res.redirect(`/message/${latestId}`);
+      } else {
+        res.redirect('back');
+      }
+    });
 
-    return res.render('chatroom/privateChat');
+    //return res.render('chatroom/privateChat');
   },
-  getPrivateMessageToUser: (req, res) => {
+  getPrivateMessageToUser: async (req, res) => {
     let sender = helpers.getUser(req);
-    let receiever = req.params.id;
 
-    User.findByPk(receiever).then((user) => {
+    let senderId = Number(sender.id);
+    let receiever = Number(req.params.id);
+
+    let history, messages;
+
+    await Private.findAll({
+      where: {
+        SendId: { [Op.or]: [senderId, receiever] },
+        ReceiveId: { [Op.or]: [senderId, receiever] },
+      },
+      include: [
+        { model: User, as: 'Sender' },
+        { model: User, as: 'Receiver' },
+      ],
+    }).then((msg) => {
+      if (msg.length > 0) {
+        return (history = msg.map((m) => ({
+          ...m.dataValues,
+          isSelf: m.dataValues.SendId === senderId,
+        })));
+      } else {
+        return (history = []);
+      }
+    });
+
+    await Private.findAll({
+      where: { [Op.or]: [{ SendId: senderId }, { ReceiveId: senderId }] },
+      include: [
+        { model: User, as: 'Sender' },
+        { model: User, as: 'Receiver' },
+      ],
+      order: [['createdAt', 'desc']],
+    }).then((allMessages) => {
+      if (allMessages.length < 0) {
+        return (messages = []);
+      }
+      let temp = [];
+
+      let allmessages = allMessages.map((m) => ({
+        ...m.dataValues,
+        isSelf: m.dataValues.SendId === senderId,
+      }));
+      //console.log('@@@@@', allmessages);
+      allmessages.forEach((am) => {
+        if (temp.length > 0) {
+          let index = temp.findIndex(
+            (t) =>
+              (t.SendId === am.SendId && t.ReceiveId === am.ReceiveId) ||
+              (t.SendId === am.ReceiveId && t.ReceiveId === am.SendId),
+          );
+
+          if (index === -1) {
+            temp.push(am);
+          } else {
+            let other = temp[index];
+            if (other.createdAt < am.createdAt) {
+              temp.splice(index, 1);
+              temp.push(am);
+            }
+          }
+        } else {
+          temp.push(am);
+        }
+      });
+
+      messages = temp.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+    });
+
+    //console.log('@@@ history', history);
+    //console.log('@@@ messages', messages);
+
+    return User.findByPk(receiever).then((user) => {
+      if (!user) {
+        return res.redirect('back');
+      }
       let visitUser = user.toJSON();
-      return res.render('chatroom/privateChat', { visitUser });
+      return res.render('chatroom/privateChat', {
+        visitUser,
+        history,
+        messages,
+      });
     });
   },
   postPrivateMessages: (req, res) => {
@@ -89,14 +182,15 @@ const chatController = {
   postMessage: (req, res) => {
     let message = req.body.message;
     let user = helpers.getUser(req).name;
-    //console.log(helpers.getUser(req).name);
+    let self = helpers.getUser(req).id;
+    console.log(helpers.getUser(req).id);
     let io = req.app.get('socketio');
 
-    io.emit('public', { user, message });
+    io.emit('public', { user, message, self });
 
     Public.create({ UserId: helpers.getUser(req).id, message }).then(() => {
       //return res.redirect('/chatroom');
-      res.redirect('javascript:history.back()');
+      return res.redirect('javascript:history.back()');
     });
   },
 };

@@ -92,7 +92,9 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     onlineUsers = onlineUsers.filter((user) => user.id !== id);
     io.emit('onlineUsers', onlineUsers);
-    socket.broadcast.emit('message', `${user.name} left chatroom`);
+    if (user.name) {
+      socket.broadcast.emit('message', `${user.name} left chatroom`);
+    }
   });
 });
 
