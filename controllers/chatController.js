@@ -34,7 +34,7 @@ const chatController = {
       where: { [Op.or]: { SendId: userSelf, ReceiveId: userSelf } },
       order: [['createdAt', 'DESC']],
     }).then((data) => {
-      console.log(data);
+      //console.log(data);
       if (data) {
         let latestId =
           Number(data[0].SendId) === userSelf
@@ -93,7 +93,7 @@ const chatController = {
         ...m.dataValues,
         isSelf: m.dataValues.SendId === senderId,
       }));
-      console.log('@@@@@', allmessages);
+      //console.log('@@@@@', allmessages);
       allmessages.forEach((am) => {
         if (temp.length > 0) {
           let index = temp.findIndex(

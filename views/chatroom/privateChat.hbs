@@ -140,5 +140,12 @@
     if (Number(selfId) === Number(receiever)) {
       console.log(`recieve${sender}'s message:${message}`)
     }
+
+
   })
+
+  window.setInterval(function () {
+    //var elem = document.getElementById('data');
+    messageslist.scrollTop = messageslist.scrollHeight;
+  }, 3000);
 </script>
