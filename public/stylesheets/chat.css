@@ -2,7 +2,7 @@
 
 .container-chat {
   display: grid;
-  grid-template-columns: 25px 350px 400px 600px 25px;
+  grid-template-columns: 1fr 350px 400px 600px 1fr;
   height: 100vh;
   width: 100%;
 }
@@ -57,7 +57,7 @@
 .online-list-name span {
   font-weight: 500;
   color: #657786;
-  font-size: 15px
+  font-size: 15px;
 }
 
 .private-tweets-content {
@@ -68,7 +68,7 @@
 }
 
 .private-left-item {
-  margin-right: 5px; 
+  margin-right: 5px;
   margin-left: 10px;
 }
 
@@ -90,23 +90,22 @@
 .private-right-item .title span {
   font-weight: 500;
   color: #657786;
-  font-size: 13px
+  font-size: 13px;
 }
 
 .private-right-item .body {
   font-size: 15px;
 }
 
-
 /* 公開聊天室 */
 .chat-room {
   grid-column-start: 4;
-  grid-column-end: 6;
+  grid-column-end: 5;
   border: 1px solid #e6ecf0;
 }
 
 .chat-room-title {
-  width: 625px;
+  /* width: 625px; */
   height: 40px;
   border-bottom: 1px solid #e6ecf0;
   line-height: 40px;
@@ -124,7 +123,7 @@
 }
 
 .chat-room-footer {
-  width: 625px;
+  width: 600px;
   border-top: 1px solid #e6ecf0;
   position: fixed;
   bottom: 0%;
@@ -150,14 +149,14 @@
 /* 私人聊天室 */
 .private-chat-room {
   grid-column-start: 4;
-  grid-column-end: 6;
+  grid-column-end: 5;
   border: 1px solid #e6ecf0;
 }
 
-.private-chat-room-title  {
+.private-chat-room-title {
   display: flex;
   flex-direction: column;
-  width: 625px;
+  /* width: 625px; */
   height: 40px;
   border-bottom: 1px solid #e6ecf0;
   font-size: 16px;
@@ -172,7 +171,6 @@
   font-size: 13px;
   margin-top: -5px;
 }
-
 
 /* 訊息 */
 /* user side */
@@ -204,20 +202,20 @@
   line-height: 1.4;
   float: left;
   background-color: #ddd;
-  color:black;
+  color: black;
   border-bottom-right-radius: 100px;
   border-top-left-radius: 100px;
   border-top-right-radius: 100px;
 }
 
 #messages .msg3 {
-border: 1px solid gray;
-  display: ;
+  border: 1px solid gray;
+  display: inline-block;
   clear: both;
   padding: 7px 13px;
   font-size: 15px;
   line-height: 1.4;
-  float:center;
+  float: center;
   background-color: #ddd;
   color: #fff;
   border-radius: 100px;
