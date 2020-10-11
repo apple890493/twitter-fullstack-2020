@@ -28,10 +28,19 @@ const chatController = {
       }
     });
   },
-  getPrivateMessagePage: (req, res) => {
+  getPrivateMessagePage: async (req, res) => {
     let userSelf = Number(helpers.getUser(req).id);
 
-    Private.findAll({
+    await Private.findAll({
+      where: {
+        ReceiveId: userSelf,
+        isLooked: false,
+      },
+    }).then((data) => {
+      return data.map((i) => i.update({ isLooked: true }));
+    });
+
+    await Private.findAll({
       where: { [Op.or]: { SendId: userSelf, ReceiveId: userSelf } },
       order: [['createdAt', 'DESC']],
     }).then((data) => {
@@ -203,6 +212,7 @@ const chatController = {
         message,
         isLooked: false,
       }).then(() => {
+        io.emit('privateTip', { receiever });
         res.redirect(`/message/${receiever}`);
       });
     } else {
