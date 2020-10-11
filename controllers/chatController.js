@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const moment = require('../config/handlebars-helper')
 const db = require('../models');
 const User = db.User;
 const Public = db.Public;
@@ -183,11 +184,13 @@ const chatController = {
     let message = req.body.message;
     let user = helpers.getUser(req).name;
     let self = helpers.getUser(req).id;
+    let avatar = helpers.getUser(req).avatar
     console.log(helpers.getUser(req).id);
     let io = req.app.get('socketio');
 
-    io.emit('public', { user, message, self });
-
+    io.emit('public', {
+      user, message, date: new Date().toLocaleString(), self, avatar
+    });
     Public.create({ UserId: helpers.getUser(req).id, message }).then(() => {
       //return res.redirect('/chatroom');
       return res.redirect('javascript:history.back()');

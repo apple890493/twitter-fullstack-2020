@@ -243,7 +243,6 @@
   max-width: 30em;
   display: flex;
   flex-direction: row;
-  float: right;
   margin: 15px 5px;
   clear: both;
   padding: 7px 13px;
@@ -262,7 +261,6 @@
   display: flex;
   flex-direction: row;
   margin: 15px 5px;
-  float: left;
   clear: both;
   padding: 7px 13px;
   font-size: 15px;
