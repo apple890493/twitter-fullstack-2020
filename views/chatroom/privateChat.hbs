@@ -6,11 +6,9 @@
       <i class="icon icon-message2" style="line-height: 16px;"></i>
     </div>
     <div class="private-list">
+
       {{#each messages}}
-
-
       {{#if this.isSelf}}
-
       <div class="private-messages-content" onclick="location.href='/message/{{this.ReceiveId}}'">
         <div class="private-left-item">
           <a href="/message/{{this.Receiver.id}}">
@@ -22,7 +20,7 @@
         <div class="private-right-item">
           <div class="title">
             <span class="name">
-              <a href="/message/{{this.User.id}}/tweets">
+              <a href="/message/{{this.User.id}}">
                 {{this.Receiver.name}}
                 <span class="time">
                   @{{this.Receiver.account}}
@@ -53,7 +51,7 @@
         <div class="private-right-item">
           <div class="title">
             <span class="name">
-              <a href="/message/{{this.Sender.id}}/tweets">
+              <a href="/message/{{this.Sender.id}}">
                 {{this.Sender.name}}
                 <span class="time">
                   @{{this.Sender.account}}
@@ -81,19 +79,38 @@
   <div class="private-chat-room">
     <div class="private-chat-room-title">
       <a href="/users/{{visitUser.id}}">{{visitUser.name}}</a>
+      {{#if isEmpty}}
+      {{else}}
       <span>@{{visitUser.account}}</span>
+      {{/if}}
     </div>
 
 
     <div class="chat-room-content">
       <div class="chat-content" id="messages">
+
+        <div class="empty">
+          {{empty}}
+        </div>
         {{#each history}}
         {{#if this.isSelf}}
-        <div class="msg">{{this.message}}</div>
+        <div class="chat-content1">
+          <div class="time">
+            <div class="msg">{{this.message}}</div>
+            <span class="tagTime">{{nowTime this.createdAt}}</span>
+          </div>
+        </div>
         {{else}}
-        <div class="msg2">{{this.message}}</div>
+        <div class="chat-content2">
+
+          <div class="time">
+            <div class="msg2">{{this.message}}</div>
+            <span class="tagTime">{{nowTime this.createdAt}}</span>
+          </div>
+        </div>
         {{/if}}
         {{/each}}
+
       </div>
     </div>
 
@@ -104,7 +121,11 @@
         <div class="input-group p-2">
           <input type="text" id="m" autocomplete="off" name="message" class="form-control" placeholder="輸入訊息...">
           <div class="input-group-append">
+            {{#if isEmpty}}
+            <button class="btn btn-nonSend" type="button"><i class="fas fa-paper-plane"></i></button>
+            {{else}}
             <button class="btn btn-send" type="submit" id="button-send"><i class="fas fa-paper-plane"></i></button>
+            {{/if}}
           </div>
         </div>
       </form>
@@ -114,10 +135,11 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-
+  //const moment = require('moment');
   let socket = io();
   let messageslist = document.getElementById('messages');
   let messageuserlist = document.querySelector('.message-user-list');
+  let privatelist = document.querySelector('.private-list');
 
   let selfId = '';
 
@@ -135,12 +157,113 @@
       sender,
       receiever,
       message,
+      senderInfo,
+      receieverInfo,
+      date
     } = data;
 
+    //const date = moment(new date()).format('hA');
     if (Number(selfId) === Number(receiever)) {
+      const before = privatelist.innerHTML;
+      const newdata = `<div class="private-messages-content" onclick="location.href='/message/${sender}'">
+        <div class="private-left-item">
+          <a href="/message/${sender}">
+            <div class=""
+              style="width: 50px;height:50px;background:url(${senderInfo.avatar})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
+            </div>
+          </a>
+        </div>
+        <div class="private-right-item">
+          <div class="title">
+            <span class="name">
+              <a href="/message/${sender}">
+                ${senderInfo.name}
+                <span class="time">
+                  @${senderInfo.account}
+                </span>
+              </a>
+            </span>
+            <span class="time" style="margin-left:2px">
+              ${date}
+            </span>
+          </div>
+          <div class="body">
+            ${message}
+
+          </div>
+        </div>
+      </div>`
+      privatelist.innerHTML = newdata + privatelist.innerHTML;
       console.log(`recieve${sender}'s message:${message}`)
+
+      messageslist.innerHTML += `
+       <div class="chat-content2">
+
+          <div class="time">
+            <div class="msg2">${message}</div>
+            <span class="tagTime">${date}</span>
+          </div>
+        </div>
+      `
     }
 
+  })
+
+  socket.on('you_send_private', data => {
+    console.log(data);
+    let {
+      roomId,
+      sender,
+      receiever,
+      message,
+      senderInfo,
+      receieverInfo,
+      date
+    } = data;
+
+    //const date = moment(new date()).format('hA');
+    if (Number(selfId) === Number(sender)) {
+      const before = privatelist.innerHTML;
+      const newdata = `<div class="private-messages-content" onclick="location.href='/message/${receiever}'">
+        <div class="private-left-item">
+          <a href="/message/${receiever}">
+            <div class=""
+              style="width: 50px;height:50px;background:url(${receieverInfo.avatar})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
+            </div>
+          </a>
+        </div>
+        <div class="private-right-item">
+          <div class="title">
+            <span class="name">
+              <a href="/message/${receiever}">
+                ${receieverInfo.name}
+                <span class="time">
+                  @${receieverInfo.account}
+                </span>
+              </a>
+            </span>
+            <span class="time" style="margin-left:2px">
+              ${date}
+            </span>
+          </div>
+          <div class="body">
+            you: ${message}
+
+          </div>
+        </div>
+      </div>`
+      privatelist.innerHTML = newdata + privatelist.innerHTML;
+      //console.log(`recieve${sender}'s message:${message}`)
+
+      messageslist.innerHTML += `
+      <div class="chat-content1">
+          <div class="time">
+            <div class="msg">${message}</div>
+            <span class="tagTime">${date}</span>
+          </div>
+        </div>
+      `
+    }
 
   })
 

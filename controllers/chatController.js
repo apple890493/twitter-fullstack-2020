@@ -5,6 +5,7 @@ const Public = db.Public;
 const Private = db.Private;
 const { Op } = require('sequelize');
 const helpers = require('../_helpers');
+const moment = require('moment');
 
 const onlineUserCount = 0;
 const onlineUsers = [];
@@ -29,29 +30,32 @@ const chatController = {
   },
   getPrivateMessagePage: async (req, res) => {
     let userSelf = Number(helpers.getUser(req).id);
+
     await Private.findAll({
       where: {
         ReceiveId: userSelf,
         isLooked: false,
-      }
-    })
-      .then(data => {
-        return data.map(i => i.update({isLooked: true}))
-      })
+      },
+    }).then((data) => {
+      return data.map((i) => i.update({ isLooked: true }));
+    });
 
     await Private.findAll({
       where: { [Op.or]: { SendId: userSelf, ReceiveId: userSelf } },
       order: [['createdAt', 'DESC']],
     }).then((data) => {
       //console.log(data);
-      if (data) {
+      if (data.length > 0) {
         let latestId =
           Number(data[0].SendId) === userSelf
             ? data[0].ReceiveId
             : data[0].SendId;
         res.redirect(`/message/${latestId}`);
       } else {
-        res.redirect('back');
+        res.render('chatroom/privateChat', {
+          empty: '尚未有任何訊息',
+          isEmpty: true,
+        });
       }
     });
 
@@ -145,7 +149,7 @@ const chatController = {
       });
     });
   },
-  postPrivateMessages: (req, res) => {
+  postPrivateMessages: async (req, res) => {
     let sender = helpers.getUser(req).id;
     let receiever = Number(req.params.id);
 
@@ -159,23 +163,54 @@ const chatController = {
     io.on('connection', (socket) => {
       socket.join(roomId);
       console.log('join room!');
-      // if(messageExisted){
-      //   io.to()
-      // }
     });
 
+    const senderInfo = {};
+    const senderData = await User.findByPk(sender).then((user) =>
+      user.toJSON(),
+    );
+    senderInfo.name = senderData.name;
+    senderInfo.avatar = senderData.avatar;
+    senderInfo.account = senderData.account;
+
+    const receieverInfo = {};
+    const receieverData = await User.findByPk(receiever).then((user) =>
+      user.toJSON(),
+    );
+    receieverInfo.name = receieverData.name;
+    receieverInfo.avatar = receieverData.avatar;
+    receieverInfo.account = receieverData.account;
+
+    //console.log(senderInfo);
+    //console.log(receieverInfo);
+    const date = moment(new Date()).fromNow(true);
+    //console.log(messageExisted);
     if (messageExisted) {
       io.to(roomId).emit('send_private_message', {
         roomId,
         sender,
         receiever,
         message,
+        senderInfo,
+        receieverInfo,
+        date,
+      });
+
+      io.to(roomId).emit('you_send_private', {
+        roomId,
+        sender,
+        receiever,
+        message,
+        senderInfo,
+        receieverInfo,
+        date,
       });
 
       Private.create({
         SendId: sender,
         ReceiveId: receiever,
         message,
+        isLooked: false,
       }).then(() => {
         io.emit('privateTip', { receiever });
         res.redirect(`/message/${receiever}`);
@@ -185,19 +220,25 @@ const chatController = {
       res.redirect(`/message/${receiever}`);
     }
   },
-  getPrivateRoom: (req, res) => res.render('chatroom/privateChat'),
+  // getPrivateRoom: (req, res) => res.render('chatroom/privateChat'),
   getMessage: (req, res) => {
     return res.render('chatroom/publicChat');
   },
   postMessage: (req, res) => {
     let message = req.body.message;
     let user = helpers.getUser(req).name;
+    let avatar = helpers.getUser(req).avatar;
     let self = helpers.getUser(req).id;
     console.log(helpers.getUser(req).id);
     let io = req.app.get('socketio');
 
-    io.emit('public', { user, message, self });
-
+    io.emit('public', {
+      user,
+      message,
+      date: new Date().toLocaleString(),
+      self,
+      avatar,
+    });
     Public.create({ UserId: helpers.getUser(req).id, message }).then(() => {
       //return res.redirect('/chatroom');
       return res.redirect('javascript:history.back()');

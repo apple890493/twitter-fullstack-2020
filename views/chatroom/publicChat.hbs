@@ -23,14 +23,20 @@
         {{#each messages}}
         {{#if this.isSelf}}
         <div class="chat-content1">
-          <div class="msg">{{this.User.name}} : {{this.message}}</div>
+          <div class="time">
+            <div class="msg">{{this.User.name}} : {{this.message}}</div>
+            <span class="tagTime">{{nowTime this.createdAt}}</span>
+          </div>
         </div>
         {{else}}
         <div class="chat-content2">
           <div class="ava"
             style="height:30px;width:30px;background:url({{this.User.avatar}}),#C4C4C4;        background-position:center;background-size:cover;border-radius: 100px;">
           </div>
-          <div class="msg2">{{this.User.name}} : {{this.message}}</div>
+          <div class="time">
+            <div class="msg2">{{this.User.name}} : {{this.message}}</div>
+            <span class="tagTime">{{nowTime this.createdAt}}</span>
+          </div>
         </div>
         {{/if}}
         {{/each}}
@@ -56,7 +62,6 @@
 {{!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> --}}
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-
 
   let socket = io();
   //let noticelist = document.querySelector('#notice');
@@ -113,25 +118,38 @@
     userlist.innerHTML = all;
   })
   socket.on('public', (data) => {
-
     let { user, message } = data;
     let item = `${user}: ${message}`;
+    let time = data.date.slice(11, 16)
+    let avatar = data.avatar
+    console.log('timeeeeeee', time)
+
     console.log(typeof (selfId))
     console.log(typeof (data.self))
     //console.log(messageslist);
     if (Number(selfId) === Number(data.self)) {
-      messageslist.innerHTML += `<div class="msg">${item}</div> `
+      messageslist.innerHTML += `<div class="chat-content1">
+      <div class="time"><div class="msg">${item}</div><span class="tagTime">${time}</span></div></div>`
     } else {
-      messageslist.innerHTML += `<div class="msg2">${item}</div> `
+      messageslist.innerHTML += `
+      <div class="chat-content2">
+          <div class="ava"
+            style="height:30px;width:30px;background:url(${avatar}),#C4C4C4;        background-position:center;background-size:cover;border-radius: 100px;">
+          </div>
+          <div class="time">
+            <div class="msg2">${item}</div>
+            <span class="tagTime">${time}</span>
+          </div>
+        </div>
+      
+      
+       `
     }
-
   })
 
   socket.on('message', (data) => {
-
-    let notice = `<div class="msg3">${data}</div>`
+    let notice = `<div class="chat-content3"><div class="msg3">${data}</div></div>`
     messageslist.innerHTML += notice;
-
 
     messageslist.scrollTop = messageslist.scrollHeight;
     //console.log(data);
