@@ -31,7 +31,7 @@ const chatController = {
   getPrivateMessagePage: (req, res) => {
     let userSelf = Number(helpers.getUser(req).id);
 
-    await Private.findAll({
+    Private.findAll({
       where: {
         ReceiveId: userSelf,
         isLooked: false,
