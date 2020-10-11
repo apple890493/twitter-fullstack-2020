@@ -28,7 +28,7 @@ const chatController = {
       }
     });
   },
-  getPrivateMessagePage: (req, res) => {
+  getPrivateMessagePage: async (req, res) => {
     let userSelf = Number(helpers.getUser(req).id);
 
     await Private.findAll({
@@ -40,8 +40,7 @@ const chatController = {
       return data.map((i) => i.update({ isLooked: true }));
     });
 
-
-    Private.findAll({
+    await Private.findAll({
       where: { [Op.or]: { SendId: userSelf, ReceiveId: userSelf } },
       order: [['createdAt', 'DESC']],
     }).then((data) => {
