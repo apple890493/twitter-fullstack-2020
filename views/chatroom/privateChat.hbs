@@ -87,6 +87,7 @@
 
     <div class="chat-room-content">
       <div class="chat-content" id="messages">
+        {{empty}}
         {{#each history}}
         {{#if this.isSelf}}
         <div class="msg">{{this.message}}</div>
@@ -114,10 +115,11 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-
+  //const moment = require('moment');
   let socket = io();
   let messageslist = document.getElementById('messages');
   let messageuserlist = document.querySelector('.message-user-list');
+  let privatelist = document.querySelector('.private-list');
 
   let selfId = '';
 
@@ -135,12 +137,102 @@
       sender,
       receiever,
       message,
+      senderInfo,
+      receieverInfo,
+      date
     } = data;
 
+    //const date = moment(new date()).format('hA');
     if (Number(selfId) === Number(receiever)) {
+      const before = privatelist.innerHTML;
+      const newdata = `<div class="private-messages-content" onclick="location.href='/message/${sender}'">
+        <div class="private-left-item">
+          <a href="/message/${sender}">
+            <div class=""
+              style="width: 50px;height:50px;background:url(${senderInfo.avatar})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
+            </div>
+          </a>
+        </div>
+        <div class="private-right-item">
+          <div class="title">
+            <span class="name">
+              <a href="/message/${sender}">
+                ${senderInfo.name}
+                <span class="time">
+                  @${senderInfo.account}
+                </span>
+              </a>
+            </span>
+            <span class="time" style="margin-left:2px">
+              ${date}
+            </span>
+          </div>
+          <div class="body">
+            ${message}
+
+          </div>
+        </div>
+      </div>`
+      privatelist.innerHTML = newdata + privatelist.innerHTML;
       console.log(`recieve${sender}'s message:${message}`)
+
+      messageslist.innerHTML += `
+       <div class="msg2">${message}</div>
+      `
     }
 
+  })
+
+  socket.on('send_private_message', data => {
+    console.log(data);
+    let {
+      roomId,
+      sender,
+      receiever,
+      message,
+      senderInfo,
+      receieverInfo,
+      date
+    } = data;
+
+    //const date = moment(new date()).format('hA');
+    if (Number(selfId) === Number(sender)) {
+      const before = privatelist.innerHTML;
+      const newdata = `<div class="private-messages-content" onclick="location.href='/message/${receiever}'">
+        <div class="private-left-item">
+          <a href="/message/${receiever}">
+            <div class=""
+              style="width: 50px;height:50px;background:url(${receieverInfo.avatar})#C4C4C4;background-repeat:no-repeat;background-position: center;background-size: cover;border-radius:50%">
+            </div>
+          </a>
+        </div>
+        <div class="private-right-item">
+          <div class="title">
+            <span class="name">
+              <a href="/message/${receiever}">
+                ${receieverInfo.name}
+                <span class="time">
+                  @${receieverInfo.account}
+                </span>
+              </a>
+            </span>
+            <span class="time" style="margin-left:2px">
+              ${date}
+            </span>
+          </div>
+          <div class="body">
+            you: ${message}
+
+          </div>
+        </div>
+      </div>`
+      privatelist.innerHTML = newdata + privatelist.innerHTML;
+      //console.log(`recieve${sender}'s message:${message}`)
+
+      messageslist.innerHTML += `
+       <div class="msg">${message}</div>
+      `
+    }
 
   })
 
