@@ -94,9 +94,21 @@
         </div>
         {{#each history}}
         {{#if this.isSelf}}
-        <div class="msg">{{this.message}}</div>
+        <div class="chat-content1">
+          <div class="time">
+            <div class="msg">{{this.message}}</div>
+            <span class="tagTime">{{nowTime this.createdAt}}</span>
+          </div>
+        </div>
+        {{!-- <div class="msg">{{this.message}}</div> --}}
         {{else}}
-        <div class="msg2">{{this.message}}</div>
+        <div class="chat-content2">
+
+          <div class="time">
+            <div class="msg2">{{this.message}}</div>
+            <span class="tagTime">{{nowTime this.createdAt}}</span>
+          </div>
+        </div>
         {{/if}}
         {{/each}}
 
@@ -186,13 +198,19 @@
       console.log(`recieve${sender}'s message:${message}`)
 
       messageslist.innerHTML += `
-       <div class="msg2">${message}</div>
+       <div class="chat-content2">
+
+          <div class="time">
+            <div class="msg2">${message}</div>
+            <span class="tagTime">${date}</span>
+          </div>
+        </div>
       `
     }
 
   })
 
-  socket.on('send_private_message', data => {
+  socket.on('you_send_private', data => {
     console.log(data);
     let {
       roomId,
@@ -239,7 +257,12 @@
       //console.log(`recieve${sender}'s message:${message}`)
 
       messageslist.innerHTML += `
-       <div class="msg">${message}</div>
+      <div class="chat-content1">
+          <div class="time">
+            <div class="msg">${message}</div>
+            <span class="tagTime">${date}</span>
+          </div>
+        </div>
       `
     }
 
