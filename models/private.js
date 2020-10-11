@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       SendId: DataTypes.INTEGER,
       ReceiveId: DataTypes.INTEGER,
       message: DataTypes.STRING,
+      isLooked: DataTypes.BOOLEAN,
     },
     {},
   );
