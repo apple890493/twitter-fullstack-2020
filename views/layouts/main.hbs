@@ -33,6 +33,31 @@
   <script src="/javascripts/checkPostTweet.js"></script>
   <script src="/javascripts/modal.js"></script>
   <script src="/javascripts/previewPic.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script>
+    let socket2 = io();
+    let noSeeMsg = document.querySelector('#noSeeMsg')
+    let nowUser = document.querySelector(".noti")
+    let notiBtn = document.querySelector(".notiBtn .icons")
+    let number = nowUser.innerText
+    console.log('noSeeMsg', noSeeMsg.innerText)
+    console.log('noSeeMsg', noSeeMsg.innerText[1])
+
+    socket2.on('privateTip', user => {
+      const { receiever } = user
+      if (Number(receiever) === Number(number)) {
+        notiBtn.innerHTML += `<p class="dot" style="color:red;height:6px;width:6px;background:red;border-radius:50%;position:absolute;left:6%;top:0%;"></p>`
+        const showCount = Number(noSeeMsg.innerText[1]) || 0
+        noSeeMsg.innerText = `(${showCount + 1})` || `(1)`
+      }
+    })
+
+    notiBtn.addEventListener('click', () => {
+      const dot = document.querySelector('.dot')
+      if (dot) dot.remove()
+    })
+  </script>
 </body>
 
 </html>
