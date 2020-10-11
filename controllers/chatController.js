@@ -216,11 +216,12 @@ const chatController = {
   postMessage: (req, res) => {
     let message = req.body.message;
     let user = helpers.getUser(req).name;
+    let avatar = helpers.getUser(req).avatar;
     let self = helpers.getUser(req).id;
     console.log(helpers.getUser(req).id);
     let io = req.app.get('socketio');
 
-    io.emit('public', { user, message, date: new Date(), self });
+    io.emit('public', { user, message, date: new Date(), self, avatar });
 
     Public.create({ UserId: helpers.getUser(req).id, message }).then(() => {
       //return res.redirect('/chatroom');
