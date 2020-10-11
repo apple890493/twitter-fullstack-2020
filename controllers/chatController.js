@@ -201,6 +201,7 @@ const chatController = {
         SendId: sender,
         ReceiveId: receiever,
         message,
+        isLooked: false,
       }).then(() => {
         res.redirect(`/message/${receiever}`);
       });
@@ -209,7 +210,7 @@ const chatController = {
       res.redirect(`/message/${receiever}`);
     }
   },
-  getPrivateRoom: (req, res) => res.render('chatroom/privateChat'),
+  // getPrivateRoom: (req, res) => res.render('chatroom/privateChat'),
   getMessage: (req, res) => {
     return res.render('chatroom/publicChat');
   },
@@ -221,8 +222,13 @@ const chatController = {
     console.log(helpers.getUser(req).id);
     let io = req.app.get('socketio');
 
-    io.emit('public', { user, message, date: new Date(), self, avatar });
-
+    io.emit('public', {
+      user,
+      message,
+      date: new Date().toLocaleString(),
+      self,
+      avatar,
+    });
     Public.create({ UserId: helpers.getUser(req).id, message }).then(() => {
       //return res.redirect('/chatroom');
       return res.redirect('javascript:history.back()');

@@ -63,7 +63,6 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
 
-
   let socket = io();
   //let noticelist = document.querySelector('#notice');
   let messageslist = document.getElementById('messages');
@@ -119,16 +118,32 @@
     userlist.innerHTML = all;
   })
   socket.on('public', (data) => {
-
     let { user, message } = data;
     let item = `${user}: ${message}`;
+    let time = data.date.slice(11, 16)
+    let avatar = data.avatar
+    console.log('timeeeeeee', time)
+
     console.log(typeof (selfId))
     console.log(typeof (data.self))
     //console.log(messageslist);
     if (Number(selfId) === Number(data.self)) {
-      messageslist.innerHTML += `<div class="msg">${item}</div> `
+      messageslist.innerHTML += `<div class="chat-content1">
+      <div class="time"><div class="msg">${item}</div><span class="tagTime">${time}</span></div></div>`
     } else {
-      messageslist.innerHTML += `<div class="msg2">${item}</div> `
+      messageslist.innerHTML += `
+      <div class="chat-content2">
+          <div class="ava"
+            style="height:30px;width:30px;background:url(${avatar}),#C4C4C4;        background-position:center;background-size:cover;border-radius: 100px;">
+          </div>
+          <div class="time">
+            <div class="msg2">${item}</div>
+            <span class="tagTime">${time}</span>
+          </div>
+        </div>
+      
+      
+       `
     }
   })
 
