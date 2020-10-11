@@ -172,8 +172,8 @@ const chatController = {
     receieverInfo.avatar = receieverData.avatar;
     receieverInfo.account = receieverData.account;
 
-    console.log(senderInfo);
-    console.log(receieverInfo);
+    //console.log(senderInfo);
+    //console.log(receieverInfo);
     const date = moment(new Date()).fromNow(true);
     //console.log(messageExisted);
     if (messageExisted) {
