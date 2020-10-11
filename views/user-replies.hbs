@@ -25,7 +25,9 @@
           data-target="#editModal">編輯個人資訊</button>
         {{else}}
         <div class="action-item user-icon">
-          <i class="icon icon-messege"></i>
+          <a href="/message/{{../visitUser.id}}">
+            <i class="icon icon-messege"></i>
+          </a>
         </div>
         <div class="action-item user-icon">
           <i class="icon icon-noti"></i>
@@ -159,9 +161,10 @@
                         <li>{{moment this.createdAt}}</li>
                         <li>{{this.comment}}</li>
                         <li>{{this.User.avatar}}</li>
+                        <li>{{../this.id}}</li>
                         <li>{{this.id}}</li>
                       </ul>
-                      <i class="icon-reply reply-on"></i>
+                      <i class="icon-reply replies-on"></i>
                     </button>
                     <div class="item-count reply-count">{{this.followingByReply.length}}</div>
                   </div>

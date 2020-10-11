@@ -15,6 +15,32 @@
     </div>
     <div class="nav-item">
       <div class="icons">
+        <i class="icon-message2"></i>
+      </div>
+      <a href="/public">
+        公開聊天室
+      </a>
+    </div>
+    <div class="nav-item notiBtn" style="position:relative;">
+      <div class="icons">
+        <i class="icon-message2"></i>
+        {{#if user.noSeeMsg}}
+        <p class="dot"
+          style="color:red;height:6px;width:6px;background:red;border-radius:50%;position:absolute;left:6%;top:0%;"></p>
+        {{/if}}
+      </div>
+      <a href="/message">
+        私人訊息
+        {{#if user.noSeeMsg}}
+        <span class="ml-1" id="noSeeMsg">({{user.noSeeMsg}})</span>
+        {{else}}
+        <span class="ml-1" id="noSeeMsg"></span>
+        {{/if}}
+        <p class="noti" style="position: absolute;" hidden>{{user.id}}</p>
+      </a>
+    </div>
+    <div class="nav-item">
+      <div class="icons">
         <i class="icon-people"></i>
       </div>
       <a href="/users/self">

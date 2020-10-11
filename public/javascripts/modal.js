@@ -33,7 +33,6 @@ main.addEventListener('click', (event) => {
     replyModal.innerHTML = replyTemplate
     $("#replyModal").modal('show')
   }
-
   if (event.target.classList.contains('replies-on')) {
     let replyUser = event.target.previousElementSibling.children[0].textContent
     let replyName = event.target.previousElementSibling.children[1].textContent
@@ -61,7 +60,6 @@ main.addEventListener('click', (event) => {
         <span class="reply-mark">回覆給</span>
         <a class="reply-user" href="/users/${replyUser}">@${replyAccount}</a>
      </div>`
-
     replyModal.innerHTML = replyTemplate
     $("#replyModal").modal('show')
   }

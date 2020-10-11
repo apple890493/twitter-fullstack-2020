@@ -6,6 +6,7 @@ const User = db.User;
 const Like = db.Like;
 const Tweet = db.Tweet;
 const Reply = db.Reply;
+const Private = db.Private;
 
 passport.use(
   new LocalStrategy(
@@ -21,7 +22,7 @@ passport.use(
             req.flash('errorScrollingMessage', '帳號/密碼輸入錯誤！'),
           );
         }
-        if (req.url === "/admin/signin" && 
+        if (req.url === "/admin/signin" &&
           user.dataValues.isAdmin === false && !user.dataValues.role) {
           return cb(
             null,
@@ -29,7 +30,7 @@ passport.use(
             req.flash('errorScrollingMessage', '帳號/密碼輸入錯誤！'),
           );
         }
-        if (req.url === "/signin" && 
+        if (req.url === "/signin" &&
           (user.dataValues.isAdmin === true || user.dataValues.role === 'admin')) {
           return cb(
             null,
@@ -80,7 +81,16 @@ passport.deserializeUser((id, cb) => {
       { model: User, as: 'Followings' },
     ],
   }).then((user) => {
-    return cb(null, user.toJSON());
+    Private.findAll({
+      where: {
+        ReceiveId: user.dataValues.id,
+        isLooked: false,
+      }
+    })
+    .then(data => {
+      user.dataValues.noSeeMsg = data.length
+      return cb(null, user.toJSON());
+    })
   });
 });
 

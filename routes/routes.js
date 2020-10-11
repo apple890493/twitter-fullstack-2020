@@ -8,6 +8,7 @@ const adminController = require('../controllers/adminController');
 const userController = require('../controllers/userController');
 const tweetController = require('../controllers/tweetController');
 const followshipController = require('../controllers/followshipController');
+const chatController = require('../controllers/chatController');
 
 const multer = require('multer');
 const upload = multer({ dest: 'temp/' });
@@ -81,9 +82,6 @@ router.post(
   tweetController.postReplies,
 );
 
-//router.post('/api/users/:id', userController.putUserSetting);
-//router.get('/api/users/:id', userController.getUserSettingPage);
-
 router.get('/users/self', userAuthenticated, userController.getSelf);
 router.get(
   '/users/:id/setting',
@@ -156,5 +154,21 @@ router.delete(
 
 router.get('/api/users/:id', userController.getEditPage);
 router.post('/api/users/:id', userAuthenticated, userController.postEditPage);
+
+router.get('/public', userAuthenticated, chatController.getChatRoom);
+// router.get('/message', userAuthenticated, chatController.getPrivateRoom);
+router.post('/public', userAuthenticated, chatController.postMessage);
+router.get(
+  '/message/:id',
+  userAuthenticated,
+  chatController.getPrivateMessageToUser,
+);
+router.get('/message', userAuthenticated, chatController.getPrivateMessagePage);
+
+router.post(
+  '/message/:id',
+  userAuthenticated,
+  chatController.postPrivateMessages,
+);
 
 module.exports = router;
