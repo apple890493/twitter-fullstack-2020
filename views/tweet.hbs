@@ -12,8 +12,8 @@
       <div class="tweet-content-top">
         <img src="{{tweet.User.avatar}}" class="rounded-circle" style="width: 50px;height:50px;">
         <div class="tweet-content-name">
-          <span class="user-name"><a href="">{{tweet.User.name}}</a></span>
-          <span class="user-account">@{{tweet.User.account}}</span>
+          <span class="user-name"><a href="">{{subText tweet.User.name 20}}</a></span>
+          <span class="user-account">@{{subText tweet.User.account 20}}</span>
         </div>
       </div>
 

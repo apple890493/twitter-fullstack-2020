@@ -6,7 +6,7 @@
     <div class="user-header">
       <a href="/tweets" style="text-align: center;"><i class="user-arrow icon icon-arrow"></i></a>
       <div class="user-header-info">
-        <div class="user-header-name">{{visitUser.name}}</div>
+        <div class="user-header-name">{{subText visitUser.name 20}}</div>
         <div class="user-header-tweet-count">{{visitUser.Tweets.length}} 推文</div>
       </div>
     </div>
@@ -44,8 +44,8 @@
         {{/Equal}}
       </div>
       <div class="user-data">
-        <div class="user-name">{{visitUser.name}}</div>
-        <div class="user-account">@{{visitUser.account}}</div>
+        <div class="user-name">{{subText visitUser.name 20}}</div>
+        <div class="user-account">@{{subText visitUser.account 20}}</div>
         <div class="user-intro">{{visitUser.introduction}}</div>
         <div class="user-follow">
           <a href="/users/{{visitUser.id}}/followings" class="user-following">
@@ -85,11 +85,11 @@
           <div class="title">
             <span class="name">
               <a href="/users/{{../visitUser.id}}">
-                {{../visitUser.name}}
+                {{subText ../visitUser.name 20}}
               </a>
             </span>
             <span class="time">
-              @{{../visitUser.account}}・{{moment this.createdAt}}
+              @{{subText ../visitUser.account 20}}・{{moment this.createdAt}}
             </span>
           </div>
           <a href="/tweets/{{this.id}}" class="body">

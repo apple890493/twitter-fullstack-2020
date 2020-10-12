@@ -38,11 +38,11 @@
             <div class="title">
               <span class="name">
                 <a href="/users/{{this.UserId}}">
-                  {{this.User.dataValues.name}}
+                  {{subText this.User.dataValues.name 20}}
                 </a>
               </span>
               <span class="time">
-                @{{this.User.dataValues.account}}・{{moment this.createdAt}}
+                @{{subText this.User.dataValues.account 20}}・{{moment this.createdAt}}
               </span>
             </div>
             <a href="/tweets/{{this.id}}" class="body">
