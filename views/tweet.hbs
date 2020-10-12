@@ -116,7 +116,6 @@
                     <div class="item-count unlike-item-count">{{this.Likes.length}}</div>
                     {{/if}}
                   </form>
-
               </div>
             </div>
             {{#each this.followingByReply}}
@@ -146,7 +145,6 @@
                 </div>
                 <div class="footer">
                   <div class="footer-item like-item">
-
                     {{#if this.isLiked}}
                     <form action="/replies/{{this.id}}/unlike" method="post" class="form-like">
                       <button type="submit" class="btn">
