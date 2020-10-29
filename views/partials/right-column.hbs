@@ -11,10 +11,10 @@
         </a>
         <div class="list-item-name">
           <a href="/users/{{this.id}}">
-            {{this.name}}
+            {{subText this.name 20}}
           </a>
           <div class="list-item-account">
-            @{{this.account}}
+            @{{subText this.account 20}}
           </div>
         </div>
         {{#if this.isFollowed }}

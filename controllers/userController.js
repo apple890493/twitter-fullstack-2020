@@ -27,6 +27,8 @@ const userController = {
   putUserSetting: (req, res) => {
     Object.keys(req.body).forEach((d) => (req.body[d] = req.body[d].trim()));
     const { account, name, email, password, checkPassword } = req.body;
+    if (account.length > 30 || name.length > 30 || email.length > 30 || password.length > 30 || checkPassword.length > 30)
+      return res.redirect('back');
     if (helpers.getUser(req).id !== Number(req.params.id))
       return res.redirect('back');
     if (!account || !name || !email || !password || !checkPassword) {
@@ -506,6 +508,8 @@ const userController = {
     Object.keys(req.body).forEach((d) => (req.body[d] = req.body[d].trim()));
     const { account, name, email, password, checkPassword } = req.body;
     req.flash('userInput', req.body);
+    if (account.length > 30 || name.length > 30 || email.length > 30 || password.length > 30 || checkPassword.length > 30)
+      return res.redirect('back');
     if (!account || !name || !email || !password || !checkPassword) {
       req.flash('errorMessage', '請確認是否有欄位未填寫');
       return res.redirect('/signup');
