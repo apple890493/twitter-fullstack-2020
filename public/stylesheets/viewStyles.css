@@ -31,6 +31,7 @@ a:hover {
   grid-template-columns: 1fr 350px 600px 400px 1fr;
   height: 100vh;
   width: 100%;
+  overflow-y: scroll;
 }
 
 /* 左邊列表 */
@@ -44,6 +45,8 @@ a:hover {
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
+  position: sticky;
+  top: 0px;
 }
 
 .navbar-content {
@@ -111,6 +114,9 @@ a:hover {
 .right-content {
   grid-column-start: 4;
   grid-column-end: 5;
+  position: sticky;
+  top: 0px;
+  height: 100vh;
 }
 
 .follow-content {
@@ -286,7 +292,7 @@ a:hover {
   border-radius: 100px;
 }
 .tweets-list {
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   width: 600px;
   height: 100vh;
 }
