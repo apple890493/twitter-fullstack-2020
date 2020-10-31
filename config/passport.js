@@ -81,6 +81,7 @@ passport.deserializeUser((id, cb) => {
       { model: User, as: 'Followings' },
     ],
   }).then((user) => {
+    if (!user) return
     Private.findAll({
       where: {
         ReceiveId: user.dataValues.id,
