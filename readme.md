@@ -3,7 +3,7 @@
 
 ### 使用者介面([Figma](https://www.figma.com/file/WfushzZVXyVwQK0SafjTmB/ACCapstone%3A-Twitter-Wireframe?node-id=0%3A1))
 
-![image](https://github.com/CoreyHuang/twitter-fullstack/blob/master/twitter-wireframe.png)
+![image](https://github.com/CoreyHuang/twitter-fullstack/blob/f/addReadme/twitter-wireframe.png)
 
 ---
 
