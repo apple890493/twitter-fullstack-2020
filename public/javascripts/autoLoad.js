@@ -1,25 +1,24 @@
 const adminTweets = document.querySelector('.admin-tweets-list')
-const body = document.querySelector('body')
-const html = document.querySelector('html')
+const containerfluid = document.querySelector('.container-fluid')
+
 let limitScroll = 1
 
-// let local = process.env.HEROKU || 'http://localhost:3000'
-
-
 if (adminTweets) {
-  window.addEventListener('scroll', (e) => {
+  containerfluid.addEventListener('scroll', (e) => {
     const adminItem = document.querySelectorAll('.admin-list-item')
-    const clientHeight = adminTweets.clientHeight;
-    const scrollTop = html.scrollTop;
-    const scrollHeight = html.scrollHeight;
+    const clientHeight = containerfluid.clientHeight;
+    const scrollTop = containerfluid.scrollTop;
+    const scrollHeight = containerfluid.scrollHeight;
 
     if ((scrollTop + clientHeight >= (scrollHeight * 0.9)) && limitScroll === 1) {
       limitScroll = 0
       axios
-        .get(`https://morning-reef-66722.herokuapp.com/api/admin/tweets/${adminItem.length}`)
+        .get(`https://still-cliffs-86683.herokuapp.com/api/admin/tweets/${adminItem.length}`)
         .then(data => {
-          limitScroll = 1
-          tweetTemplate(data.data)
+          if (data.data.length !== 0) {
+            limitScroll = 1
+            tweetTemplate(data.data)
+          }
         })
         .catch(() => { return console.log('Load error') })
     }
